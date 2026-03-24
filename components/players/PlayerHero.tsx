@@ -21,8 +21,8 @@ export const PlayerHero = ({ name, team, pos, price, pts, form, mins, image }: P
       <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/5 to-transparent pointer-events-none" />
 
       <div className="flex items-center gap-10 relative z-10">
-        <div className="w-24 h-24 rounded-[5px] overflow-hidden border-2 border-white shadow-xl bg-white shrink-0 group-hover:scale-105 transition-transform duration-500">
-          <img src={image} alt={name} className="w-full h-full object-cover" />
+        <div className="w-24 h-24 rounded-[5px] overflow-hidden border-2 border-white shadow-xl bg-white shrink-0 group-hover:scale-105 transition-transform duration-500 flex items-center justify-center p-3">
+          <img src={image} alt={name} className="w-full h-full object-contain" />
         </div>
 
         <div className="space-y-1.5">

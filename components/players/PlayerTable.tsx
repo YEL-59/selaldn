@@ -92,8 +92,12 @@ export const PlayerTable = () => {
               <tr key={player.id} className="hover:bg-gray-50/50 transition-colors group">
                 <td className="py-4 px-4">
                   <Link href={`/players/${player.id}`} className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-[5px] overflow-hidden border border-gray-100 shrink-0">
-                      <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${player.name}`} alt={player.name} className="w-full h-full object-cover" />
+                    <div className="w-10 h-10 rounded-[5px] overflow-hidden border border-gray-100/50 bg-gray-50/20 shrink-0">
+                      <img 
+                        src="/images/jersey-red.png" 
+                        alt={player.name} 
+                        className="w-full h-full object-contain p-1.5" 
+                      />
                     </div>
                     <div>
                       <p className="font-extrabold text-[#111827] text-[14px]">{player.name}</p>

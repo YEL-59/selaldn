@@ -33,7 +33,7 @@ export default function PlayerDetailsPage() {
           pts={142}
           form={8.5}
           mins="90%"
-          image="https://api.dicebear.com/7.x/avataaars/svg?seed=Haaland"
+          image="/images/jersey-red.png"
         />
       </motion.div>
 
@@ -74,7 +74,7 @@ export default function PlayerDetailsPage() {
               foot="Left-footed"
               dob="July 21, 2000"
               apps={126}
-              image="https://api.dicebear.com/7.x/avataaars/svg?seed=HaalandProfile"
+              image="/images/jersey-red.png"
             />
           </motion.div>
         </div>

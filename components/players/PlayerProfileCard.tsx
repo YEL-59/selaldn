@@ -22,7 +22,7 @@ export const PlayerProfileCard = ({ name, team, pos, nationality, foot, dob, app
            <img 
              src={image} 
              alt={name} 
-             className="w-full h-full object-cover" 
+             className="w-full h-full object-contain p-6" 
            />
            {/* Subtle overlay gradient to blend image with the bottom area */}
            <div className="absolute inset-0 bg-gradient-to-t from-cyan-400/40 via-transparent to-transparent" />
