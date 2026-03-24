@@ -132,23 +132,23 @@ const HomePage = () => {
               <path
                 d="M9 6V3H6"
                 stroke="#37003C"
-                stroke-width="1.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               />
               <path
                 d="M4.5 6H13.5C14.3279 6 15 6.67213 15 7.5V13.5C15 14.3279 14.3279 15 13.5 15H4.5C3.67213 15 3 14.3279 3 13.5V7.5C3 6.67213 3.67213 6 4.5 6V6"
                 stroke="#37003C"
-                stroke-width="1.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               />
               <path
                 d="M1.5 10.5H3M15 10.5H16.5M11.25 9.75V11.25M6.75 9.75V11.25"
                 stroke="#37003C"
-                stroke-width="1.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               />
             </svg>
             <p className="text-[#37003C] font-medium">
@@ -165,9 +165,21 @@ const HomePage = () => {
         >
           <div className="flex items-center gap-2 mb-4">
             <div className="w-8 h-8 rounded-lg bg-[linear-gradient(135deg,#00BC7D_0%,#009689_100%)] flex items-center justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-  <path d="M9.63498 2.72156C9.70823 2.58851 9.84809 2.50586 9.99998 2.50586C10.1519 2.50586 10.2917 2.58851 10.365 2.72156L12.825 7.39156C12.9438 7.61052 13.1543 7.76485 13.3988 7.81228C13.6434 7.8597 13.8963 7.79524 14.0883 7.63656L17.6525 4.58323C17.7929 4.46906 17.9909 4.45853 18.1426 4.55718C18.2942 4.65584 18.3649 4.84112 18.3175 5.01573L15.9558 13.5541C15.8568 13.9131 15.5315 14.1628 15.1591 14.1657H4.84164C4.46894 14.1631 4.14328 13.9134 4.04414 13.5541L1.68331 5.01656C1.63586 4.84195 1.70654 4.65667 1.85823 4.55802C2.00991 4.45936 2.20793 4.46989 2.34831 4.58406L5.91164 7.6374C6.10366 7.79608 6.3566 7.86054 6.60114 7.81311C6.84569 7.76569 7.05619 7.61135 7.17498 7.3924L9.63498 2.72156M4.16664 17.4999H15.8333" stroke="white" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 20 20"
+                fill="none"
+              >
+                <path
+                  d="M9.63498 2.72156C9.70823 2.58851 9.84809 2.50586 9.99998 2.50586C10.1519 2.50586 10.2917 2.58851 10.365 2.72156L12.825 7.39156C12.9438 7.61052 13.1543 7.76485 13.3988 7.81228C13.6434 7.8597 13.8963 7.79524 14.0883 7.63656L17.6525 4.58323C17.7929 4.46906 17.9909 4.45853 18.1426 4.55718C18.2942 4.65584 18.3649 4.84112 18.3175 5.01573L15.9558 13.5541C15.8568 13.9131 15.5315 14.1628 15.1591 14.1657H4.84164C4.46894 14.1631 4.14328 13.9134 4.04414 13.5541L1.68331 5.01656C1.63586 4.84195 1.70654 4.65667 1.85823 4.55802C2.00991 4.45936 2.20793 4.46989 2.34831 4.58406L5.91164 7.6374C6.10366 7.79608 6.3566 7.86054 6.60114 7.81311C6.84569 7.76569 7.05619 7.61135 7.17498 7.3924L9.63498 2.72156M4.16664 17.4999H15.8333"
+                  stroke="white"
+                  strokeWidth="1.66667"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
             </div>
             <h3 className="font-bold text-lg text-[#1e1b4b]">
               Captaincy Suggestion
@@ -184,9 +196,7 @@ const HomePage = () => {
             </div>
             <div className="flex-1">
               <p className="font-bold text-sm text-[#37003C]">E. Haaland</p>
-              <p className="text-xs text-[#6B7280]">
-                Expected: 11.2 pts
-              </p>
+              <p className="text-xs text-[#6B7280]">Expected: 11.2 pts</p>
             </div>
             <div className="bg-[#F8F9FA] border border-[#EAEAEA] text-[#37003C] px-3 py-1.5 rounded-[4px] text-xs font-bold">
               65% 10+ pts
@@ -258,7 +268,9 @@ const HomePage = () => {
             </div>
             <div className="flex items-center gap-2 text-[#6B7280]">
               <Calendar className="w-4 h-4" />
-              <span className="text-xs font-medium">Deadline: Fri 18:30 GMT</span>
+              <span className="text-xs font-medium">
+                Deadline: Fri 18:30 GMT
+              </span>
             </div>
           </div>
 
@@ -406,14 +418,39 @@ const HomePage = () => {
 
             <div className="flex gap-3">
               <div className="w-8 h-8 rounded-full bg-[#37003C] flex items-center justify-center shrink-0 shadow-lg">
-               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-  <path d="M7.99967 5.33317V2.6665H5.33301" stroke="white" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M3.99984 5.33325H11.9998C12.7357 5.33325 13.3332 5.9307 13.3332 6.66659V11.9999C13.3332 12.7358 12.7357 13.3333 11.9998 13.3333H3.99984C3.26395 13.3333 2.6665 12.7358 2.6665 11.9999V6.66659C2.6665 5.9307 3.26395 5.33325 3.99984 5.33325V5.33325" stroke="white" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M1.33301 9.33317H2.66634M13.333 9.33317H14.6663M9.99967 8.6665V9.99984M5.99967 8.6665V9.99984" stroke="white" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                >
+                  <path
+                    d="M7.99967 5.33317V2.6665H5.33301"
+                    stroke="white"
+                    strokeWidth="1.33333"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M3.99984 5.33325H11.9998C12.7357 5.33325 13.3332 5.9307 13.3332 6.66659V11.9999C13.3332 12.7358 12.7357 13.3333 11.9998 13.3333H3.99984C3.26395 13.3333 2.6665 12.7358 2.6665 11.9999V6.66659C2.6665 5.9307 3.26395 5.33325 3.99984 5.33325V5.33325"
+                    stroke="white"
+                    strokeWidth="1.33333"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M1.33301 9.33317H2.66634M13.333 9.33317H14.6663M9.99967 8.6665V9.99984M5.99967 8.6665V9.99984"
+                    stroke="white"
+                    strokeWidth="1.33333"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
               </div>
               <div className="rounded-[4px_16px_16px_16px] border border-[rgba(139,92,246,0.3)] bg-[rgba(55,0,60,0.5)] text-white/90 text-[11px] font-medium py-3 px-4 rounded-tl-none leading-relaxed shadow-sm">
-                Based on expected minutes and fixture difficulty, Haaland (7.8 xP) is your best option, followed by Palmer (6.4 xP).
+                Based on expected minutes and fixture difficulty, Haaland (7.8
+                xP) is your best option, followed by Palmer (6.4 xP).
               </div>
             </div>
           </div>
@@ -464,9 +501,7 @@ const HomePage = () => {
               <p className="font-bold text-[#1e1b4b] text-base">
                 Enzo Fernández
               </p>
-              <p className="text-sm text-[#555]">
-                CHE • FWD
-              </p>
+              <p className="text-sm text-[#555]">CHE • FWD</p>
             </div>
             <div className="px-4 py-2 rounded-2xl bg-[#00FF88] text-black font-bold text-sm shadow-md shadow-emerald-100">
               7.2
@@ -486,9 +521,7 @@ const HomePage = () => {
           </div>
 
           <div className="pt-2 flex items-center gap-6">
-            <span className="text-xs text-[#666] w-16">
-              Next 3
-            </span>
+            <span className="text-xs text-[#666] w-16">Next 3</span>
             <div className="flex-1 flex gap-3">
               {["MCI(H)", "MCI(H)", "FUL(A)"].map((fix, i) => (
                 <div
@@ -629,7 +662,12 @@ const PitchRow = ({
   children: React.ReactNode;
   className?: string;
 }) => (
-  <div className={cn("grid grid-cols-3 items-center justify-center w-fit mx-auto gap-6 mb-8", className)}>
+  <div
+    className={cn(
+      "grid grid-cols-3 items-center justify-center w-fit mx-auto gap-6 mb-8",
+      className,
+    )}
+  >
     {children}
   </div>
 );
