@@ -2,6 +2,7 @@ import Image from "next/image";
 import React from "react";
 import authImage from "@/assets/images/auth-page-image.png";
 import LogoImg from "@/assets/images/logo.png";
+import Link from "next/link";
 
 const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -11,13 +12,15 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
         <div className="flex flex-col h-full overflow-y-auto w-full max-w-[640px] mx-auto lg:mx-0 lg:max-w-none p-8 lg:p-14">
           {/* Logo Section */}
           <div className="flex items-center gap-2 mb-16">
-            <Image
-              className="object-contain"
-              src={LogoImg}
-              alt="Logo"
-              width={130}
-              height={40}
-            />
+            <Link href="/">
+              <Image
+                className="object-contain"
+                src={LogoImg}
+                alt="Logo"
+                width={130}
+                height={40}
+              />
+            </Link>
           </div>
 
           <div className="flex-1 flex flex-col justify-center">
