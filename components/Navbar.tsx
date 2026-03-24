@@ -10,11 +10,12 @@ import { cn } from "@/lib/utils";
 const navItems = [
   { name: "Dashboard", href: "/" },
   { name: "Optimiser", href: "/optimiser" },
-  { name: "Transfers", href: "/transfers" },
-  { name: "Fixtures", href: "/fixtures" },
-  { name: "AI Chat", href: "/ai-chat" },
-  { name: "Players", href: "/players" },
+  { name: "Transfers", href: "#" },//transfers
+  { name: "Fixtures", href: "#" },//fixtures
+  { name: "AI Chat", href: "#" },//ai-chat
+  { name: "Players", href: "#" },//players
 ];
+
 
 export const Navbar = () => {
   const pathname = usePathname();
