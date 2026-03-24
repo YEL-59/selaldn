@@ -374,8 +374,21 @@ const HomePage = () => {
                 <PitchPlayer name="Watkins" score={8.3} team="AVL" />
               </PitchRow>
             </div>
+
+
           </div>
         </motion.div>
+
+        {/* Bench Section */}
+        <div className="mt-16 w-full  relative z-10">
+          <h3 className="text-xl font-black text-[#2E004B] mb-8 ">Bench Player</h3>
+          <div className="  flex items-center justify-between gap-8">
+            <BenchPlayer name="Saliba" pos="GK" score={8.5} />
+            <BenchPlayer name="Gabriel" pos="DEF" score={8.2} />
+            <BenchPlayer name="Virgil" pos="DEF" score={8.8} />
+            <BenchPlayer name="Foden" pos="MID" score={8.3} />
+          </div>
+        </div>
       </div>
 
       {/* Right Column (Chat, Player Details) */}
@@ -594,11 +607,11 @@ const PitchPlayer = ({
       {/* Avatar with Neon Cyan Ring */}
       <div className="relative mb-2">
         <div className="w-16 h-16 md:w-20 md:h-20 rounded-full shadow-[0_0_15px_rgba(0,252,255,0.4)] transition-all group-hover:shadow-[0_0_20px_rgba(0,252,255,0.6)]">
-          <div className="w-full h-full rounded-full overflow-hidden bg-gray-100 border border-[#04F5FF]">
+          <div className="w-full h-full rounded-full overflow-hidden bg-transparent border-none">
             <img
-              src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${name + team}`}
+              src="/images/jersey-red.png"
               alt={name}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-contain p-2"
             />
           </div>
         </div>
@@ -616,6 +629,44 @@ const PitchPlayer = ({
 
       {/* Fixture/Stat Boxes - Seamless Bar */}
       <div className="flex w-full rounded-b-xl overflow-hidden shadow-sm h-12">
+        <FixtureBox val={score} team="BHA" type="emerald" />
+        <FixtureBox val={8.7} team="LIV" type="cyan" />
+        <FixtureBox val={8.3} team="MCI" type="purple" />
+      </div>
+    </div>
+  </motion.div>
+);
+
+const BenchPlayer = ({
+  name,
+  pos,
+  score,
+}: {
+  name: string;
+  pos: string;
+  score: number;
+}) => (
+  <motion.div
+    initial={{ opacity: 0, y: 15 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    whileHover={{ scale: 1.05 }}
+    viewport={{ once: true }}
+    className="flex flex-col items-center w-full"
+  >
+    <div className="rounded-xl border border-gray-100 bg-white shadow-[0_8px_30px_rgba(0,0,0,0.04)] w-full py-6 px-3 flex flex-col items-center relative overflow-hidden group">
+      <span className="text-[12px] font-black text-[#2E004B] uppercase tracking-widest mb-4">{pos}</span>
+
+      <div className="relative mb-4">
+        <div className="w-14 h-14 rounded-full border border-cyan-400 p-1">
+          <div className="w-full h-full rounded-full overflow-hidden bg-transparent">
+            <img src="/images/jersey-cyan.png" alt={name} className="w-full h-full object-contain p-1" />
+          </div>
+        </div>
+      </div>
+
+      <h4 className="font-black text-[#37003C] text-[15px] mb-4 tracking-tight">{name}</h4>
+
+      <div className="flex w-full rounded-b-lg overflow-hidden shadow-sm h-14">
         <FixtureBox val={score} team="BHA" type="emerald" />
         <FixtureBox val={8.7} team="LIV" type="cyan" />
         <FixtureBox val={8.3} team="MCI" type="purple" />

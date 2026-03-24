@@ -8,9 +8,7 @@ export default function MainLayout({
   return (
     <div className="min-h-screen bg-[#ededff] text-foreground font-sans">
       <Navbar />
-      <main className="container mx-auto px-4 py-8">
-        {children}
-      </main>
+      <main className="container mx-auto px-4 py-8">{children}</main>
     </div>
   );
 }
