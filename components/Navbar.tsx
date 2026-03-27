@@ -12,8 +12,8 @@ const navItems = [
   { name: "Optimiser", href: "/optimiser" },
   { name: "Transfers", href: "/transfers" },//transfers
   { name: "Fixtures", href: "/fixtures" },//fixtures
-  { name: "AI Chat", href: "#" },//ai-chat
-  { name: "Players", href: "#" },//players
+  { name: "AI Chat", href: "/ai-chat" },//ai-chat
+  { name: "Players", href: "/players" },//players
 ];
 
 
