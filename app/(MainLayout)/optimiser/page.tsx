@@ -112,17 +112,17 @@ const OptimiserPage = () => {
                      </div>
                   </div>
 
-                  <div className="bg-linear-to-br from-[#00BC7D] to-[#009689] shadow-[0_4px_12px_0_rgba(0,0,0,0.02)] rounded-[1.5rem] p-10 flex-1 relative overflow-hidden flex flex-col justify-between shadow-2xl select-none min-h-[500px]">
+                  <div className="bg-linear-to-br from-[#00BC7D] to-[#009689] shadow-[0_4px_12px_0_rgba(0,0,0,0.02)] rounded-[1.5rem] p-6 flex-1 relative overflow-hidden flex flex-col justify-between shadow-2xl select-none min-h-[450px]">
                      {/* Pitch Lines */}
-                     <div className="absolute inset-0 pointer-events-none opacity-20 border-2 border-white m-4 rounded-[1.25rem]">
+                     <div className="absolute inset-0 pointer-events-none opacity-20 border-2 border-white m-2 rounded-[1.25rem]">
                         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[55%] h-[20%] border-b-2 border-x-2 border-white" />
                         <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[55%] h-[20%] border-t-2 border-x-2 border-white" />
                         <div className="absolute top-1/2 left-0 w-full h-0.5 bg-white -translate-y-1/2" />
-                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[160px] h-[160px] rounded-full border-2 border-white" />
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120px] h-[120px] rounded-full border-2 border-white" />
                      </div>
 
                      {/* Players */}
-                     <div className="relative z-10 flex flex-col justify-between h-full py-4">
+                     <div className="relative z-10 flex flex-col justify-between h-full py-2">
                         <PitchRow className="grid-cols-1">
                            <PitchPlayer name="Ederson" score={8.2} team="MCI" />
                         </PitchRow>
@@ -131,7 +131,7 @@ const OptimiserPage = () => {
                            <PitchPlayer name="Gabriel" score={8.1} team="ARS" />
                            <PitchPlayer name="Virgil" score={9.1} team="LIV" />
                         </PitchRow>
-                        <PitchRow className="grid-cols-5 mt-22">
+                        <PitchRow className="grid-cols-5 mt-5">
                            <PitchPlayer name="Enzo" score={7.2} team="CHE" />
                            <PitchPlayer name="Palmer" score={8.4} team="CHE" />
                            <PitchPlayer name="Foden" score={8.9} team="MCI" />
@@ -298,35 +298,35 @@ const PitchPlayer = ({
       whileHover={{ scale: 1.05 }}
       viewport={{ once: true }}
       transition={{ type: "spring", stiffness: 400, damping: 25 }}
-      className="flex flex-col items-center w-[120px] md:w-[120px]"
+      className="flex flex-col items-center w-[110px] md:w-[110px]"
    >
       {/* Card Container */}
-      <div className="rounded-md border border-[#EAEAEA] bg-white shadow-[0_4px_12px_0_rgba(0,0,0,0.04)] backdrop-blur-xs w-full py-4 px-2 flex flex-col items-center relative overflow-hidden group">
+      <div className="rounded-md border border-[#EAEAEA] bg-white shadow-[0_4px_12px_0_rgba(0,0,0,0.04)] backdrop-blur-xs w-full py-3 px-1.5 flex flex-col items-center relative overflow-hidden group">
          {/* Avatar with Neon Cyan Ring */}
-         <div className="relative mb-2">
-            <div className="w-16 h-16 md:w-20 md:h-20 rounded-full shadow-[0_0_15px_rgba(0,252,255,0.4)] transition-all group-hover:shadow-[0_0_20px_rgba(0,252,255,0.6)]">
+         <div className="relative mb-1.5">
+            <div className="w-14 h-14 md:w-16 md:h-16 rounded-full shadow-[0_0_12px_rgba(0,252,255,0.35)] transition-all group-hover:shadow-[0_0_18px_rgba(0,252,255,0.55)]">
                <div className="w-full h-full rounded-full overflow-hidden bg-transparent border-none">
                   <img
                      src="/images/jersey-red.png"
                      alt={name}
-                     className="w-full h-full object-contain p-2"
+                     className="w-full h-full object-contain p-1.5"
                   />
                </div>
             </div>
             {isCaptain && (
-               <div className="absolute -top-1 -right-1 w-6 h-6 bg-[#00ff85] text-black rounded-full flex items-center justify-center text-sm font-bold border-2 border-white">
+               <div className="absolute -top-0.5 -right-0.5 w-5 h-5 bg-[#00ff85] text-black rounded-full flex items-center justify-center text-[10px] font-bold border-2 border-white">
                   C
                </div>
             )}
          </div>
 
          {/* Name - Pixel Perfect Typography */}
-         <h4 className="font-extrabold text-[#37003C] text-sm mb-2 tracking-tight text-center w-full">
+         <h4 className="font-extrabold text-[#37003C] text-[13px] mb-1.5 tracking-tight text-center w-full truncate px-1">
             {name}
          </h4>
 
          {/* Fixture/Stat Boxes - Seamless Bar */}
-         <div className="flex w-full rounded-b-xl overflow-hidden shadow-sm h-12">
+         <div className="flex w-full rounded-b-xl overflow-hidden shadow-sm h-10 md:h-11">
             <FixtureBox val={score} team="BHA" type="emerald" />
             <FixtureBox val={8.7} team="LIV" type="cyan" />
             <FixtureBox val={8.3} team="MCI" type="purple" />
@@ -344,7 +344,7 @@ const PitchRow = ({
 }) => (
    <div
       className={cn(
-         "grid items-center justify-center w-fit mx-auto gap-6 mb-8",
+         "grid items-center justify-center w-fit mx-auto gap-6 mb-2",
          className,
       )}
    >

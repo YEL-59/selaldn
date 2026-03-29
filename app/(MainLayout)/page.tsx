@@ -321,9 +321,9 @@ const HomePage = () => {
         {/* The Pitch Rendering */}
         <motion.div
           variants={fadeInUp}
-          className="rounded-md border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.20)] backdrop-blur-[6px] p-4 relative overflow-hidden flex flex-col min-h-[700px] md:min-h-[800px]"
+          className="rounded-md border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.20)] backdrop-blur-[6px] p-2 relative overflow-hidden flex flex-col min-h-[550px]"
         >
-          <div className="flex justify-between items-center mb-6 relative z-10">
+          <div className="flex justify-between items-center mb-2 relative z-10">
             <h3 className="font-bold text-[#37003C] text-xl md:text-2xl">
               The Pitch
             </h3>
@@ -338,17 +338,17 @@ const HomePage = () => {
           </div>
 
           {/* Pitch Layout Container */}
-          <div className="flex-1 rounded-lg bg-linear-to-br from-[#00BC7D] to-[#009689] shadow-[0_4px_12px_0_rgba(0,0,0,0.02)] p-4 md:p-10 relative overflow-hidden flex flex-col justify-between">
+          <div className="flex-1 rounded-lg bg-linear-to-br from-[#00BC7D] to-[#009689] shadow-[0_4px_12px_0_rgba(0,0,0,0.02)] p-3 relative overflow-hidden flex flex-col justify-between">
             {/* Pitch Lines */}
-            <div className="absolute inset-0 pointer-events-none opacity-20 border-2 border-white m-4 rounded-[1rem]">
+            <div className="absolute inset-0 pointer-events-none opacity-20 border-2 border-white m-1 rounded-[1rem]">
               <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[60%] h-[15%] border-b-2 border-x-2 border-white" />
               <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[60%] h-[15%] border-t-2 border-x-2 border-white" />
               <div className="absolute top-1/2 left-0 w-full h-0.5 bg-white -translate-y-1/2" />
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120px] md:w-[180px] h-[120px] md:h-[180px] rounded-full border-2 border-white" />
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[100px] md:w-[150px] h-[100px] md:h-[150px] rounded-full border-2 border-white" />
             </div>
 
             {/* Players by Position (Modern Layout) */}
-            <div className="flex-1 flex flex-col justify-between relative z-10 py-4">
+            <div className="flex-1 flex flex-col justify-between relative z-10 py-2">
               {/* Goalkeeper (Top) */}
               <PitchRow className="grid-cols-1">
                 <PitchPlayer name="Ederson" score={8.5} team="MCI" />
@@ -360,7 +360,7 @@ const HomePage = () => {
                 <PitchPlayer name="Gabriel" score={8.2} team="ARS" />
                 <PitchPlayer name="Virgil" score={8.8} team="LIV" />
               </PitchRow>
-              <PitchRow className="grid-cols-5 mt-20">
+              <PitchRow className="grid-cols-5 mt-8">
                 <PitchPlayer name="Saliba" score={8.2} team="ARS" />
                 <PitchPlayer name="Gabriel" score={8.2} team="ARS" />
                 <PitchPlayer name="Virgil" score={8.8} team="LIV" />
@@ -380,9 +380,9 @@ const HomePage = () => {
         </motion.div>
 
         {/* Bench Section */}
-        <div className="mt-16 w-full  relative z-10">
-          <h3 className="text-xl font-black text-[#2E004B] mb-8 ">Bench Player</h3>
-          <div className="  flex items-center justify-between gap-8">
+        <div className="mt-4 w-full  relative z-10">
+          <h3 className="text-xl font-black text-[#2E004B] mb-2 ">Bench Player</h3>
+          <div className="  flex items-center justify-between gap-2 w-full">
             <BenchPlayer name="Saliba" pos="GK" score={8.5} />
             <BenchPlayer name="Gabriel" pos="DEF" score={8.2} />
             <BenchPlayer name="Virgil" pos="DEF" score={8.8} />
@@ -600,35 +600,35 @@ const PitchPlayer = ({
     whileHover={{ scale: 1.05 }}
     viewport={{ once: true }}
     transition={{ type: "spring", stiffness: 400, damping: 25 }}
-    className="flex flex-col items-center w-[120px] md:w-[120px]"
+    className="flex flex-col items-center w-[110px] md:w-[110px]"
   >
     {/* Card Container */}
-    <div className="rounded-md border border-[#EAEAEA] bg-white shadow-[0_4px_12px_0_rgba(0,0,0,0.04)] backdrop-blur-xs w-full py-4 px-2 flex flex-col items-center relative overflow-hidden group">
+    <div className="rounded-md border border-[#EAEAEA] bg-white shadow-[0_4px_12px_0_rgba(0,0,0,0.04)] backdrop-blur-xs w-full py-3 px-1.5 flex flex-col items-center relative overflow-hidden group">
       {/* Avatar with Neon Cyan Ring */}
-      <div className="relative mb-2">
-        <div className="w-16 h-16 md:w-20 md:h-20 rounded-full shadow-[0_0_15px_rgba(0,252,255,0.4)] transition-all group-hover:shadow-[0_0_20px_rgba(0,252,255,0.6)]">
+      <div className="relative mb-1.5">
+        <div className="w-14 h-14 md:w-16 md:h-16 rounded-full shadow-[0_0_12px_rgba(0,252,255,0.35)] transition-all group-hover:shadow-[0_0_18px_rgba(0,252,255,0.55)]">
           <div className="w-full h-full rounded-full overflow-hidden bg-transparent border-none">
             <img
               src="/images/jersey-red.png"
               alt={name}
-              className="w-full h-full object-contain p-2"
+              className="w-full h-full object-contain p-1.5"
             />
           </div>
         </div>
         {isCaptain && (
-          <div className="absolute -top-1 -right-1 w-6 h-6 bg-[#00ff85] text-black rounded-full flex items-center justify-center text-sm font-bold border-2 border-white">
+          <div className="absolute -top-0.5 -right-0.5 w-5 h-5 bg-[#00ff85] text-black rounded-full flex items-center justify-center text-[10px] font-bold border-2 border-white">
             C
           </div>
         )}
       </div>
 
       {/* Name - Pixel Perfect Typography */}
-      <h4 className="font-extrabold text-[#37003C] text-sm mb-2 tracking-tight text-center w-full">
+      <h4 className="font-extrabold text-[#37003C] text-[13px] mb-1.5 tracking-tight text-center w-full truncate px-1">
         {name}
       </h4>
 
       {/* Fixture/Stat Boxes - Seamless Bar */}
-      <div className="flex w-full rounded-b-xl overflow-hidden shadow-sm h-12">
+      <div className="flex w-full rounded-b-xl overflow-hidden shadow-sm h-10 md:h-11">
         <FixtureBox val={score} team="BHA" type="emerald" />
         <FixtureBox val={8.7} team="LIV" type="cyan" />
         <FixtureBox val={8.3} team="MCI" type="purple" />
@@ -651,22 +651,22 @@ const BenchPlayer = ({
     whileInView={{ opacity: 1, y: 0 }}
     whileHover={{ scale: 1.05 }}
     viewport={{ once: true }}
-    className="flex flex-col items-center w-full"
+    className="flex flex-col items-center w-full "
   >
-    <div className="rounded-xl border border-gray-100 bg-white shadow-[0_8px_30px_rgba(0,0,0,0.04)] w-full py-6 px-3 flex flex-col items-center relative overflow-hidden group">
-      <span className="text-[12px] font-black text-[#2E004B] uppercase tracking-widest mb-4">{pos}</span>
+    <div className="rounded-xl border border-gray-100 bg-white shadow-[0_8px_30px_rgba(0,0,0,0.04)] w-full py-4.5 px-2.5 flex flex-col items-center relative overflow-hidden group">
+      <span className="text-[11px] font-black text-[#2E004B] uppercase tracking-widest mb-3.5">{pos}</span>
 
-      <div className="relative mb-4">
-        <div className="w-14 h-14 rounded-full border border-cyan-400 p-1">
+      <div className="relative mb-3.5">
+        <div className="w-11 h-11 rounded-full border border-cyan-400 p-0.5">
           <div className="w-full h-full rounded-full overflow-hidden bg-transparent">
-            <img src="/images/jersey-cyan.png" alt={name} className="w-full h-full object-contain p-1" />
+            <img src="/images/jersey-cyan.png" alt={name} className="w-full h-full object-contain p-0.5" />
           </div>
         </div>
       </div>
 
-      <h4 className="font-black text-[#37003C] text-[15px] mb-4 tracking-tight">{name}</h4>
+      <h4 className="font-black text-[#37003C] text-[13px] mb-3.5 tracking-tight truncate w-full text-center">{name}</h4>
 
-      <div className="flex w-full rounded-b-lg overflow-hidden shadow-sm h-14">
+      <div className="flex w-full rounded-b-lg overflow-hidden shadow-sm h-11 md:h-12">
         <FixtureBox val={score} team="BHA" type="emerald" />
         <FixtureBox val={8.7} team="LIV" type="cyan" />
         <FixtureBox val={8.3} team="MCI" type="purple" />
@@ -715,7 +715,7 @@ const PitchRow = ({
 }) => (
   <div
     className={cn(
-      "grid grid-cols-3 items-center justify-center w-fit mx-auto gap-6 mb-8",
+      "grid grid-cols-3 items-center justify-center w-fit mx-auto gap-6 mb-2",
       className,
     )}
   >
