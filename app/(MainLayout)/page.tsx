@@ -321,7 +321,7 @@ const HomePage = () => {
         {/* The Pitch Rendering */}
         <motion.div
           variants={fadeInUp}
-          className="rounded-md border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.20)] backdrop-blur-[6px] p-2 relative overflow-hidden flex flex-col min-h-[550px]"
+          className="rounded-md border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.20)] backdrop-blur-[6px] p-2 relative overflow-hidden flex flex-col min-h-[850px]"
         >
           <div className="flex justify-between items-center mb-2 relative z-10">
             <h3 className="font-bold text-[#37003C] text-xl md:text-2xl">
@@ -338,57 +338,75 @@ const HomePage = () => {
           </div>
 
           {/* Pitch Layout Container */}
-          <div className="flex-1 rounded-lg bg-linear-to-br from-[#00BC7D] to-[#009689] shadow-[0_4px_12px_0_rgba(0,0,0,0.02)] p-3 relative overflow-hidden flex flex-col justify-between">
-            {/* Pitch Lines */}
-            <div className="absolute inset-0 pointer-events-none opacity-20 border-2 border-white m-1 rounded-[1rem]">
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[60%] h-[15%] border-b-2 border-x-2 border-white" />
-              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[60%] h-[15%] border-t-2 border-x-2 border-white" />
-              <div className="absolute top-1/2 left-0 w-full h-0.5 bg-white -translate-y-1/2" />
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[100px] md:w-[150px] h-[100px] md:h-[150px] rounded-full border-2 border-white" />
+          <div className="flex-1 rounded-xl bg-emerald-600 shadow-[inset_0_4px_32px_rgba(0,0,0,0.1)] relative overflow-hidden flex flex-col pt-4 pb-0">
+            {/* Pitch Lines - Authentic 1-Half Layout */}
+            <div className="absolute inset-0 pointer-events-none overflow-hidden">
+              {/* Grass Texture Patterns - Professional Vertical Stripes */}
+              <div className="absolute inset-0 opacity-[0.14] bg-[linear-gradient(90deg,#000_50%,transparent_50%)] bg-[length:120px_100%]" />
+
+              {/* Main Field Boundary */}
+              <div className="absolute inset-x-6 top-6 bottom-[125px] border-2 border-white/40 rounded-2xl shadow-[0_0_15px_rgba(255,255,255,0.05)]" />
+
+              {/* Penalty Area (Top) */}
+              <div className="absolute top-6 left-1/2 -translate-x-1/2 w-[54%] h-[20%] border-b-2 border-x-2 border-white/40" />
+              <div className="absolute top-6 left-1/2 -translate-x-1/2 w-[24%] h-[8%] border-b-2 border-x-2 border-white/40" />
+
+              {/* Penalty Arc */}
+              <div className="absolute top-[26%] left-1/2 -translate-x-1/2 w-[16%] h-[5%] border-b-2 border-white/40 rounded-[0_0_50%_50%]" />
+
+              {/* Center Line and Center Spot */}
+              <div className="absolute bottom-[125px] left-6 right-6 h-0.5 bg-white/40" />
+              <div className="absolute bottom-[125px] left-1/2 -translate-x-1/2 translate-y-1/2 w-[160px] h-[160px] border-2 border-white/40 rounded-full" />
+              <div className="absolute bottom-[125px] left-1/2 -translate-x-1/2 translate-y-1/2 w-3 h-3 bg-white/50 rounded-full shadow-[0_0_10px_rgba(255,255,255,0.3)]" />
             </div>
 
+
             {/* Players by Position (Modern Layout) */}
-            <div className="flex-1 flex flex-col justify-between relative z-10 py-2">
+            <div className="flex-1 flex flex-col justify-around relative z-10 py-2">
               {/* Goalkeeper (Top) */}
-              <PitchRow className="grid-cols-1">
+              <PitchRow className="mb-0">
                 <PitchPlayer name="Ederson" score={8.5} team="MCI" />
               </PitchRow>
 
               {/* Defenders */}
-              <PitchRow className="grid-cols-3">
+              <PitchRow className="gap-4">
                 <PitchPlayer name="Saliba" score={8.2} team="ARS" />
                 <PitchPlayer name="Gabriel" score={8.2} team="ARS" />
                 <PitchPlayer name="Virgil" score={8.8} team="LIV" />
               </PitchRow>
-              <PitchRow className="grid-cols-5 mt-8">
-                <PitchPlayer name="Saliba" score={8.2} team="ARS" />
-                <PitchPlayer name="Gabriel" score={8.2} team="ARS" />
-                <PitchPlayer name="Virgil" score={8.8} team="LIV" />
-                <PitchPlayer name="Gabriel" score={8.2} team="ARS" />
-                <PitchPlayer name="Virgil" score={8.3} team="LIV" />
+
+              <PitchRow className="gap-2">
+                <PitchPlayer name="Palmer" score={9.4} team="CHE" />
+                <PitchPlayer name="Saka" score={9.2} team="ARS" />
+                <PitchPlayer name="Foden" score={8.7} team="MCI" />
+                <PitchPlayer name="Salah" score={9.8} team="LIV" />
+                <PitchPlayer name="Son" score={8.5} team="TOT" />
               </PitchRow>
 
               {/* Forwards (Bottom) */}
-              <PitchRow className="grid-cols-2">
+              <PitchRow className="gap-8">
                 <PitchPlayer name="Haaland" score={9.5} team="MCI" isCaptain />
                 <PitchPlayer name="Watkins" score={8.3} team="AVL" />
               </PitchRow>
             </div>
 
-
+            {/* Integrated Bench Section */}
+            <div className="mt-auto w-full relative z-20 bg-transparent backdrop-blur-md border-t border-white/10 p-4 pt-6">
+              <div className="absolute -top-3 left-6 bg-[#37003C] text-white text-[10px] font-bold px-3 py-1 rounded-full border border-white/20 uppercase tracking-widest shadow-lg">
+                Bench
+              </div>
+              <div className="flex items-center justify-between gap-3 w-full max-w-[500px] mx-auto">
+                <BenchPlayer name="Raya" pos="GK" score={8.5} />
+                <BenchPlayer name="Saliba" pos="DEF" score={8.2} />
+                <BenchPlayer name="Virgil" pos="DEF" score={8.8} />
+                <BenchPlayer name="Foden" pos="MID" score={8.3} />
+              </div>
+            </div>
           </div>
+
         </motion.div>
 
-        {/* Bench Section */}
-        <div className="mt-4 w-full  relative z-10">
-          <h3 className="text-xl font-black text-[#2E004B] mb-2 ">Bench Player</h3>
-          <div className="  flex items-center justify-between gap-2 w-full">
-            <BenchPlayer name="Saliba" pos="GK" score={8.5} />
-            <BenchPlayer name="Gabriel" pos="DEF" score={8.2} />
-            <BenchPlayer name="Virgil" pos="DEF" score={8.8} />
-            <BenchPlayer name="Foden" pos="MID" score={8.3} />
-          </div>
-        </div>
+
       </div>
 
       {/* Right Column (Chat, Player Details) */}
@@ -600,18 +618,18 @@ const PitchPlayer = ({
     whileHover={{ scale: 1.05 }}
     viewport={{ once: true }}
     transition={{ type: "spring", stiffness: 400, damping: 25 }}
-    className="flex flex-col items-center w-[110px] md:w-[110px]"
+    className="flex flex-col items-center w-[85px] md:w-[85px]"
   >
     {/* Card Container */}
-    <div className="rounded-md border border-[#EAEAEA] bg-white shadow-[0_4px_12px_0_rgba(0,0,0,0.04)] backdrop-blur-xs w-full py-3 px-1.5 flex flex-col items-center relative overflow-hidden group">
+    <div className="rounded-xl border border-[#EAEAEA] bg-white shadow-[0_4px_12px_0_rgba(0,0,0,0.04)] backdrop-blur-xs w-full pt-2 pb-2 px-1 flex flex-col items-center relative overflow-hidden group">
       {/* Avatar with Neon Cyan Ring */}
-      <div className="relative mb-1.5">
-        <div className="w-14 h-14 md:w-16 md:h-16 rounded-full shadow-[0_0_12px_rgba(0,252,255,0.35)] transition-all group-hover:shadow-[0_0_18px_rgba(0,252,255,0.55)]">
+      <div className="relative mb-1">
+        <div className="w-10 h-10 md:w-11 md:h-11 rounded-full shadow-[0_0_12px_rgba(0,252,255,0.35)] transition-all group-hover:shadow-[0_0_18px_rgba(0,252,255,0.55)]">
           <div className="w-full h-full rounded-full overflow-hidden bg-transparent border-none">
             <img
               src="/images/jersey-red.png"
               alt={name}
-              className="w-full h-full object-contain p-1.5"
+              className="w-full h-full object-contain p-1"
             />
           </div>
         </div>
@@ -623,16 +641,17 @@ const PitchPlayer = ({
       </div>
 
       {/* Name - Pixel Perfect Typography */}
-      <h4 className="font-extrabold text-[#37003C] text-[13px] mb-1.5 tracking-tight text-center w-full truncate px-1">
+      <h4 className="font-semibold text-[#37003C] text-[12px] mb-1 tracking-tight text-center w-full truncate px-1">
         {name}
       </h4>
 
       {/* Fixture/Stat Boxes - Seamless Bar */}
-      <div className="flex w-full rounded-b-xl overflow-hidden shadow-sm h-10 md:h-11">
+      <div className="flex w-full rounded-b-lg overflow-hidden shadow-sm h-8 md:h-9">
         <FixtureBox val={score} team="BHA" type="emerald" />
         <FixtureBox val={8.7} team="LIV" type="cyan" />
         <FixtureBox val={8.3} team="MCI" type="purple" />
       </div>
+
     </div>
   </motion.div>
 );
@@ -651,26 +670,27 @@ const BenchPlayer = ({
     whileInView={{ opacity: 1, y: 0 }}
     whileHover={{ scale: 1.05 }}
     viewport={{ once: true }}
-    className="flex flex-col items-center w-full "
+    className="flex flex-col items-center w-[85px] md:w-[85px]"
   >
-    <div className="rounded-xl border border-gray-100 bg-white shadow-[0_8px_30px_rgba(0,0,0,0.04)] w-full py-4.5 px-2.5 flex flex-col items-center relative overflow-hidden group">
-      <span className="text-[11px] font-black text-[#2E004B] uppercase tracking-widest mb-3.5">{pos}</span>
+    <div className="rounded-xl border border-gray-100 bg-white shadow-[0_8px_30px_rgba(0,0,0,0.04)] w-full pt-3 pb-2 px-1 flex flex-col items-center relative overflow-hidden group">
+      <span className="text-[9px] font-black text-[#2E004B] uppercase tracking-widest mb-2">{pos}</span>
 
-      <div className="relative mb-3.5">
-        <div className="w-11 h-11 rounded-full border border-cyan-400 p-0.5">
+      <div className="relative mb-2">
+        <div className="w-9 h-9 rounded-full border border-cyan-400 p-0.5">
           <div className="w-full h-full rounded-full overflow-hidden bg-transparent">
             <img src="/images/jersey-cyan.png" alt={name} className="w-full h-full object-contain p-0.5" />
           </div>
         </div>
       </div>
 
-      <h4 className="font-black text-[#37003C] text-[13px] mb-3.5 tracking-tight truncate w-full text-center">{name}</h4>
+      <h4 className="font-black text-[#37003C] text-[10px] mb-2 tracking-tight truncate w-full text-center">{name}</h4>
 
-      <div className="flex w-full rounded-b-lg overflow-hidden shadow-sm h-11 md:h-12">
+      <div className="flex w-full rounded-b-lg overflow-hidden h-8 md:h-9">
         <FixtureBox val={score} team="BHA" type="emerald" />
         <FixtureBox val={8.7} team="LIV" type="cyan" />
         <FixtureBox val={8.3} team="MCI" type="purple" />
       </div>
+
     </div>
   </motion.div>
 );
@@ -692,18 +712,19 @@ const FixtureBox = ({
   return (
     <div
       className={cn(
-        "flex-1 flex flex-col items-center justify-center gap-0",
+        "flex-1 flex flex-col items-center justify-center gap-0.5 p-1 h-full",
         colors[type],
       )}
     >
-      <span className="text-[12px] md:text-[14px] font-bold leading-tight tracking-tight">
+      <span className="text-[10px] font-black leading-none tracking-tighter">
         {val.toFixed(1)}
       </span>
-      <span className="text-[8px] md:text-[10px] font-medium leading-none">
+      <span className="text-[8px] font-bold leading-none opacity-90 uppercase">
         {team}
       </span>
     </div>
   );
+
 };
 
 const PitchRow = ({
@@ -715,7 +736,7 @@ const PitchRow = ({
 }) => (
   <div
     className={cn(
-      "grid grid-cols-3 items-center justify-center w-fit mx-auto gap-6 mb-2",
+      "flex items-center justify-center w-full gap-4",
       className,
     )}
   >
