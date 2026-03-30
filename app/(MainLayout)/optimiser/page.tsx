@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import PitchView from "@/components/players/PitchView";
 
 // Card Animation variants
 const fadeInUp = {
@@ -112,38 +113,32 @@ const OptimiserPage = () => {
                      </div>
                   </div>
 
-                  <div className="bg-linear-to-br from-[#00BC7D] to-[#009689] shadow-[0_4px_12px_0_rgba(0,0,0,0.02)] rounded-[1.5rem] p-6 flex-1 relative overflow-hidden flex flex-col justify-between shadow-2xl select-none min-h-[450px]">
-                     {/* Pitch Lines */}
-                     <div className="absolute inset-0 pointer-events-none opacity-20 border-2 border-white m-2 rounded-[1.25rem]">
-                        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[55%] h-[20%] border-b-2 border-x-2 border-white" />
-                        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[55%] h-[20%] border-t-2 border-x-2 border-white" />
-                        <div className="absolute top-1/2 left-0 w-full h-0.5 bg-white -translate-y-1/2" />
-                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120px] h-[120px] rounded-full border-2 border-white" />
-                     </div>
-
-                     {/* Players */}
-                     <div className="relative z-10 flex flex-col justify-between h-full py-2">
-                        <PitchRow className="grid-cols-1">
-                           <PitchPlayer name="Ederson" score={8.2} team="MCI" />
-                        </PitchRow>
-                        <PitchRow className="grid-cols-3">
-                           <PitchPlayer name="Saliba" score={8.1} team="ARS" />
-                           <PitchPlayer name="Gabriel" score={8.1} team="ARS" />
-                           <PitchPlayer name="Virgil" score={9.1} team="LIV" />
-                        </PitchRow>
-                        <PitchRow className="grid-cols-5 mt-5">
-                           <PitchPlayer name="Enzo" score={7.2} team="CHE" />
-                           <PitchPlayer name="Palmer" score={8.4} team="CHE" />
-                           <PitchPlayer name="Foden" score={8.9} team="MCI" />
-                           <PitchPlayer name="Salah" score={9.1} team="LIV" />
-                           <PitchPlayer name="Rodri" score={6.9} team="MCI" />
-                        </PitchRow>
-                        <PitchRow className="grid-cols-2">
-                           <PitchPlayer name="Haaland" score={9.2} team="MCI" isCaptain />
-                           <PitchPlayer name="Watkins" score={8.5} team="AVL" />
-                        </PitchRow>
-                     </div>
-                  </div>
+                  {/* The Pitch Rendering */}
+                  <PitchView
+                     goalkeeper={{ name: "Ederson", score: 8.5, team: "MCI" }}
+                     defenders={[
+                        { name: "Saliba", score: 8.2, team: "ARS" },
+                        { name: "Gabriel", score: 8.2, team: "ARS" },
+                        { name: "Virgil", score: 8.8, team: "LIV" },
+                     ]}
+                     midfielders={[
+                        { name: "Palmer", score: 9.4, team: "CHE" },
+                        { name: "Saka", score: 9.2, team: "ARS" },
+                        { name: "Foden", score: 8.7, team: "MCI" },
+                        { name: "Salah", score: 9.8, team: "LIV" },
+                        { name: "Son", score: 8.5, team: "TOT" },
+                     ]}
+                     forwards={[
+                        { name: "Haaland", score: 9.5, team: "MCI", isCaptain: true },
+                        { name: "Watkins", score: 8.3, team: "AVL" },
+                     ]}
+                     bench={[
+                        { name: "Raya", pos: "GK", score: 8.5 },
+                        { name: "Saliba", pos: "DEF", score: 8.2 },
+                        { name: "Virgil", pos: "DEF", score: 8.8 },
+                        { name: "Foden", pos: "MID", score: 8.3 },
+                     ]}
+                  />
                </motion.div>
             </div>
 
@@ -181,10 +176,10 @@ const OptimiserPage = () => {
                      <h3 className="font-bold text-[#1E1B4B]">Optimised Bench</h3>
                   </div>
                   <div className="space-y-4">
-                     <BenchPlayer num={1} name="Martinez" team="AVL • GK" score={3.2} image="https://assets.sorare.com/playerpicture/71542f36-c037-4632-bae6-dcfa9fd42a8b/picture/2cdac350e9ba9ce459952865ffb418a0.png" />
-                     <BenchPlayer num={2} name="Rúben Dias" team="MCI • DEF" score={2.8} image="https://assets.sorare.com/playerpicture/12c1a6fe-f5ab-4c28-9895-1f7c320e8b2b/picture/squared-582ed71569722360f09a96e2be67be44.png" />
-                     <BenchPlayer num={3} name="Mac Allister" team="LIV • FWD" score={1.5} image="https://assets.sorare.com/playerpicture/8abb6635-f48c-4bc7-9ed7-947f63f3a479/picture/42fbc940a02b66cb44322432bad76a3b.png" />
-                     <BenchPlayer num={4} name="Cristian Romero" team="TOT • DEF" score={1.2} image="https://assets.sorare.com/playerpicture/43356079-c5c8-47c3-8321-72945d8b2bf3/picture/squared-baad2115167a4432ff2ebae2ad76a3b.png" />
+                     <OptimisedBenchItem num={1} name="Martinez" team="AVL • GK" score={3.2} image="https://assets.sorare.com/playerpicture/71542f36-c037-4632-bae6-dcfa9fd42a8b/picture/2cdac350e9ba9ce459952865ffb418a0.png" />
+                     <OptimisedBenchItem num={2} name="Rúben Dias" team="MCI • DEF" score={2.8} image="https://assets.sorare.com/playerpicture/12c1a6fe-f5ab-4c28-9895-1f7c320e8b2b/picture/squared-582ed71569722360f09a96e2be67be44.png" />
+                     <OptimisedBenchItem num={3} name="Mac Allister" team="LIV • FWD" score={1.5} image="https://assets.sorare.com/playerpicture/8abb6635-f48c-4bc7-9ed7-947f63f3a479/picture/42fbc940a02b66cb44322432bad76a3b.png" />
+                     <OptimisedBenchItem num={4} name="Cristian Romero" team="TOT • DEF" score={1.2} image="https://assets.sorare.com/playerpicture/43356079-c5c8-47c3-8321-72945d8b2bf3/picture/squared-baad2115167a4432ff2ebae2ad76a3b.png" />
                   </div>
                </motion.div>
             </div>
@@ -234,7 +229,7 @@ const CaptainCard = ({ title, name, team, points, form, fixture, image, isCaptai
    </motion.div>
 );
 
-const BenchPlayer = ({ num, name, team, score, image }: any) => (
+const OptimisedBenchItem = ({ num, name, team, score, image }: any) => (
    <div className="flex items-center gap-4 bg-[#F1F5F9]/50 p-3 rounded-2xl border border-transparent hover:border-purple-100 transition-all group cursor-pointer">
       <span className="text-xs font-black text-gray-300 w-4">{num}</span>
       <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-white shadow-lg ring-1 ring-gray-100 group-hover:scale-105 transition-transform">
@@ -247,108 +242,6 @@ const BenchPlayer = ({ num, name, team, score, image }: any) => (
       <div className="px-4 py-1.5 bg-[#00FF88] rounded-xl shadow-sm">
          <span className="text-[11px] font-black text-black">{score.toFixed(1)}</span>
       </div>
-   </div>
-);
-
-const FixtureBox = ({
-   val,
-   team,
-   type,
-}: {
-   val: number;
-   team: string;
-   type: "emerald" | "cyan" | "purple";
-}) => {
-   const colors = {
-      emerald: "bg-[#00ff85] text-[#202126]",
-      cyan: "bg-[#04f5ff] text-[#202126]",
-      purple: "bg-[#37003C] text-white",
-   };
-   return (
-      <div
-         className={cn(
-            "flex-1 flex flex-col items-center justify-center gap-0",
-            colors[type],
-         )}
-      >
-         <span className="text-[12px] md:text-[14px] font-bold leading-tight tracking-tight">
-            {val.toFixed(1)}
-         </span>
-         <span className="text-[8px] md:text-[10px] font-medium leading-none">
-            {team}
-         </span>
-      </div>
-   );
-};
-
-const PitchPlayer = ({
-   name,
-   score,
-   isCaptain,
-   team,
-}: {
-   name: string;
-   score: number;
-   isCaptain?: boolean;
-   team: string;
-}) => (
-   <motion.div
-      initial={{ opacity: 0, y: 15 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      whileHover={{ scale: 1.05 }}
-      viewport={{ once: true }}
-      transition={{ type: "spring", stiffness: 400, damping: 25 }}
-      className="flex flex-col items-center w-[110px] md:w-[110px]"
-   >
-      {/* Card Container */}
-      <div className="rounded-md border border-[#EAEAEA] bg-white shadow-[0_4px_12px_0_rgba(0,0,0,0.04)] backdrop-blur-xs w-full py-3 px-1.5 flex flex-col items-center relative overflow-hidden group">
-         {/* Avatar with Neon Cyan Ring */}
-         <div className="relative mb-1.5">
-            <div className="w-14 h-14 md:w-16 md:h-16 rounded-full shadow-[0_0_12px_rgba(0,252,255,0.35)] transition-all group-hover:shadow-[0_0_18px_rgba(0,252,255,0.55)]">
-               <div className="w-full h-full rounded-full overflow-hidden bg-transparent border-none">
-                  <img
-                     src="/images/jersey-red.png"
-                     alt={name}
-                     className="w-full h-full object-contain p-1.5"
-                  />
-               </div>
-            </div>
-            {isCaptain && (
-               <div className="absolute -top-0.5 -right-0.5 w-5 h-5 bg-[#00ff85] text-black rounded-full flex items-center justify-center text-[10px] font-bold border-2 border-white">
-                  C
-               </div>
-            )}
-         </div>
-
-         {/* Name - Pixel Perfect Typography */}
-         <h4 className="font-extrabold text-[#37003C] text-[13px] mb-1.5 tracking-tight text-center w-full truncate px-1">
-            {name}
-         </h4>
-
-         {/* Fixture/Stat Boxes - Seamless Bar */}
-         <div className="flex w-full rounded-b-xl overflow-hidden shadow-sm h-10 md:h-11">
-            <FixtureBox val={score} team="BHA" type="emerald" />
-            <FixtureBox val={8.7} team="LIV" type="cyan" />
-            <FixtureBox val={8.3} team="MCI" type="purple" />
-         </div>
-      </div>
-   </motion.div>
-);
-
-const PitchRow = ({
-   children,
-   className,
-}: {
-   children: React.ReactNode;
-   className?: string;
-}) => (
-   <div
-      className={cn(
-         "grid items-center justify-center w-fit mx-auto gap-6 mb-2",
-         className,
-      )}
-   >
-      {children}
    </div>
 );
 
