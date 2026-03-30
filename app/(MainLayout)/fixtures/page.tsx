@@ -247,14 +247,14 @@ const FixturesPage = () => {
                     className={cn(
                       "w-8 h-8 rounded-[4px] flex items-center justify-center text-xs font-medium shadow-md",
                       num === 1
-                        ? "bg-[#00FF87] text-[#1A1A2E]"
+                        ? "bg-[#395524] text-white"
                         : num === 2
-                          ? "bg-[#4effab] text-[#1A1A2E]"
+                          ? "bg-[#02FD7A] text-[#1A1A2E]"
                           : num === 3
-                            ? "bg-[#04f5ff] text-[#1A1A2E]"
+                            ? "bg-[#E7E7E7] text-[#1A1A2E]"
                             : num === 4
-                              ? "bg-[#ff4793] text-white"
-                              : "bg-[#ff0054] text-white",
+                              ? "bg-[#FE1951] text-white"
+                              : "bg-[#80062D] text-white",
                     )}
                   >
                     {num}
@@ -324,14 +324,14 @@ const FixturesPage = () => {
                                 className={cn(
                                   "h-14 w-full rounded-xl flex flex-col items-center justify-center text-white border border-white/10 transition-all hover:scale-[1.05] hover:shadow-lg cursor-help",
                                   match.fdr === 1
-                                    ? "bg-[#00FF87] text-[#1A1A2E]"
+                                    ? "bg-[#395524] text-white"
                                     : match.fdr === 2
-                                      ? "bg-[#4effab] text-[#1A1A2E]"
+                                      ? "bg-[#02FD7A] text-[#1A1A2E]"
                                       : match.fdr === 3
-                                        ? "bg-[#04f5ff] text-[#1A1A2E]"
+                                        ? "bg-[#E7E7E7] text-[#1A1A2E]"
                                         : match.fdr === 4
-                                          ? "bg-[#ff4793] text-white"
-                                          : "bg-[#ff0054] text-white",
+                                          ? "bg-[#FE1951] text-white"
+                                          : "bg-[#80062D] text-white",
                                 )}
                               >
                                 <p className="text-xs font-bold leading-none mb-1">
