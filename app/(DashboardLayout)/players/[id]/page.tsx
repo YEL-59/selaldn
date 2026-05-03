@@ -17,7 +17,9 @@ export default function PlayerDetailsPage() {
         className="flex items-center gap-2.5 text-[#2E004B] hover:text-cyan-400 transition-all mb-10 group"
       >
         <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-        <span className="text-[14px] font-black tracking-tight">Back to Player</span>
+        <span className="text-[14px] font-semibold tracking-tight">
+          Back to Player
+        </span>
       </Link>
 
       {/* Hero Section */}
