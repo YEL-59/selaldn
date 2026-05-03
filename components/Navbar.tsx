@@ -8,14 +8,13 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 
 const navItems = [
-  { name: "Dashboard", href: "/" },
+  { name: "Dashboard", href: "/dashboard" },
   { name: "Optimiser", href: "/optimiser" },
-  { name: "Transfers", href: "/transfers" },//transfers
-  { name: "Fixtures", href: "/fixtures" },//fixtures
-  { name: "AI Chat", href: "/ai-chat" },//ai-chat
-  { name: "Players", href: "/players" },//players
+  { name: "Transfers", href: "/transfers" },
+  { name: "Fixtures", href: "/fixtures" },
+  { name: "AI Chat", href: "/ai-chat" },
+  { name: "Players", href: "/players" },
 ];
-
 
 export const Navbar = () => {
   const pathname = usePathname();
@@ -26,11 +25,13 @@ export const Navbar = () => {
       <div className="container mx-auto px-6 flex items-center justify-between">
         <div className="flex items-center gap-12">
           {/* Logo Section */}
-          <Link href="/" className="flex items-center gap-3 group">
+          <Link href="/dashboard" className="flex items-center gap-3 group">
             <div className="w-10 h-10 bg-linear-to-br from-[#8E7AB5] to-[#2E004B] rounded-[12px] flex items-center justify-center shadow-md group-hover:scale-105 transition-transform">
               <Bot className="w-6 h-6 text-white" strokeWidth={2.5} />
             </div>
-            <span className="text-[22px] font-black text-[#2E004B] tracking-tight">FPL AI</span>
+            <span className="text-[22px] font-semibold text-[#2E004B] tracking-tight">
+              FPL AI
+            </span>
           </Link>
 
           {/* Nav Pill Section (Desktop) - Pixel Perfect Refinement */}
@@ -45,14 +46,18 @@ export const Navbar = () => {
                     "relative px-8 h-full flex items-center justify-center text-sm font-medium tracking-wide transition-all rounded-full whitespace-nowrap z-10",
                     isActive
                       ? "text-white"
-                      : "text-[#2B003D] hover:text-[#5D3891]/70"
+                      : "text-[#2B003D] hover:text-[#5D3891]/70",
                   )}
                 >
                   {isActive && (
                     <motion.div
                       layoutId="nav-pill-active"
                       className="absolute inset-0 bg-[#2B003D] rounded-full shadow-[0_10px_30px_-5px_rgba(43,0,61,0.6)] z-0"
-                      transition={{ type: "spring", stiffness: 450, damping: 35 }}
+                      transition={{
+                        type: "spring",
+                        stiffness: 450,
+                        damping: 35,
+                      }}
                     />
                   )}
                   <span className="relative z-20">{item.name}</span>
@@ -81,7 +86,11 @@ export const Navbar = () => {
             className="lg:hidden p-2.5 bg-gray-50 hover:bg-gray-100 rounded-xl transition-all"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
-            {isMobileMenuOpen ? <X className="w-6 h-6 text-[#2E004B]" /> : <Menu className="w-6 h-6 text-[#2E004B]" />}
+            {isMobileMenuOpen ? (
+              <X className="w-6 h-6 text-[#2E004B]" />
+            ) : (
+              <Menu className="w-6 h-6 text-[#2E004B]" />
+            )}
           </button>
         </div>
       </div>
@@ -99,10 +108,10 @@ export const Navbar = () => {
               href={item.href}
               onClick={() => setIsMobileMenuOpen(false)}
               className={cn(
-                "px-6 py-4 rounded-2xl text-base font-black transition-all",
+                "px-6 py-4 rounded-2xl text-base font-semibold transition-all",
                 pathname === item.href
                   ? "bg-[#2E004B] text-white shadow-lg shadow-purple-950/20"
-                  : "bg-gray-50 text-[#2E004B] hover:bg-gray-100"
+                  : "bg-gray-50 text-[#2E004B] hover:bg-gray-100",
               )}
             >
               {item.name}

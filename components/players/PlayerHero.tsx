@@ -14,7 +14,16 @@ interface PlayerHeroProps {
   image: string;
 }
 
-export const PlayerHero = ({ name, team, pos, price, pts, form, mins, image }: PlayerHeroProps) => {
+export const PlayerHero = ({
+  name,
+  team,
+  pos,
+  price,
+  pts,
+  form,
+  mins,
+  image,
+}: PlayerHeroProps) => {
   return (
     <div className="w-full bg-[#00F5FF]/15 border border-[#00F5FF]/20 rounded-[5px] p-8 mb-8 flex items-center justify-between relative overflow-hidden group">
       {/* Background Gradient/Decor */}
@@ -22,12 +31,20 @@ export const PlayerHero = ({ name, team, pos, price, pts, form, mins, image }: P
 
       <div className="flex items-center gap-10 relative z-10">
         <div className="w-24 h-24 rounded-[5px] overflow-hidden border-2 border-white shadow-xl bg-white shrink-0 group-hover:scale-105 transition-transform duration-500 flex items-center justify-center p-3">
-          <img src={image} alt={name} className="w-full h-full object-contain" />
+          <img
+            src={image}
+            alt={name}
+            className="w-full h-full object-contain"
+          />
         </div>
 
         <div className="space-y-1.5">
-          <p className="text-[14px] font-bold tracking-[1px] text-[#37003C]">{team} • {pos}</p>
-          <h1 className="text-[36px] font-bold tracking-[-0.5px] text-[#37003C]">{name}</h1>
+          <p className="text-[14px] font-bold tracking-[1px] text-[#37003C]">
+            {team} • {pos}
+          </p>
+          <h1 className="text-[36px] font-bold tracking-[-0.5px] text-[#37003C]">
+            {name}
+          </h1>
         </div>
       </div>
 
@@ -41,13 +58,23 @@ export const PlayerHero = ({ name, team, pos, price, pts, form, mins, image }: P
   );
 };
 
-const Stat = ({ label, value, isPositive }: { label: string; value: string; isPositive?: boolean }) => (
+const Stat = ({
+  label,
+  value,
+  isPositive,
+}: {
+  label: string;
+  value: string;
+  isPositive?: boolean;
+}) => (
   <div className="text-center">
     <p className="text-[13px] font-semibold text-[#37003C] mb-2">{label}</p>
-    <p className={cn(
-      "text-[28px] font-black tracking-tighter leading-none",
-      isPositive ? "text-[#00FF88]" : "text-[#2E004B]"
-    )}>
+    <p
+      className={cn(
+        "text-[28px] font-semibold tracking-tighter leading-none",
+        isPositive ? "text-[#00FF88]" : "text-[#2E004B]",
+      )}
+    >
       {value}
     </p>
   </div>

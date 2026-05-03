@@ -19,7 +19,7 @@ export const ChatSuggestions = () => {
           transition={{ delay: 0.1 * index }}
           whileHover={{ scale: 1.05, y: -2 }}
           whileTap={{ scale: 0.95 }}
-          className="bg-[#00F5FF] hover:bg-[#00D9E6] text-[#2E004B] text-[13px] font-black px-6 py-3 rounded-full shadow-sm hover:shadow-md transition-all whitespace-nowrap"
+          className="bg-[#00F5FF] hover:bg-[#00D9E6] text-[#2E004B] text-[13px] font-semibold px-6 py-3 rounded-full shadow-sm hover:shadow-md transition-all whitespace-nowrap"
         >
           {suggestion}
         </motion.button>
