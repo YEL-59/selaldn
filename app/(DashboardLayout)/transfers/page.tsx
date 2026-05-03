@@ -10,7 +10,8 @@ import {
    ChevronRight,
    Loader2,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 
 // Card Animation variants
@@ -39,20 +40,30 @@ const getFixtureText = (fixtures: any[]) => {
 };
 
 const TransfersPage = () => {
+   const router = useRouter();
    const [teamId, setTeamId] = useState("");
    const [vcData, setVcData] = useState<any>(null);
    const [transferData, setTransferData] = useState<any>(null);
-   const [loading, setLoading] = useState(false);
+   const [loading, setLoading] = useState(true);
 
-   const handleFetchData = async () => {
-      if (!teamId) return;
+   useEffect(() => {
+     const savedId = localStorage.getItem("fpl_team_id");
+     if (savedId) {
+       setTeamId(savedId);
+       fetchData(savedId);
+     } else {
+       router.push("/");
+     }
+   }, [router]);
+
+   const fetchData = async (id: string) => {
       setLoading(true);
       try {
          const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://selaldn.thesyndicates.team";
          
          const [vcRes, transRes] = await Promise.all([
-            fetch(`${API_BASE_URL}/api/fpl/optimizer/recommended-vice-captain?team_id=${teamId}`),
-            fetch(`${API_BASE_URL}/api/fpl/transfer-page?team_id=${teamId}`)
+            fetch(`${API_BASE_URL}/api/fpl/optimizer/recommended-vice-captain?team_id=${id}`),
+            fetch(`${API_BASE_URL}/api/fpl/transfer-page?team_id=${id}`)
          ]);
          
          const vcJson = await vcRes.json();
@@ -76,37 +87,13 @@ const TransfersPage = () => {
          className="container mx-auto py-12 px-6"
       >
          {/* Header Section */}
-         <motion.div variants={fadeInUp} className="mb-10 text-center lg:text-left">
-            <p className="text-base font-semibold text-[#6B7280] tracking-[0.25em] mb-2 px-1">Transfer Suggestions</p>
-            <h1 className="text-[40px] font-semibold text-[#37003C] leading-tight tracking-tight">AI Transfer Strategy</h1>
-         </motion.div>
-
-         {/* ID Input Section */}
-         <div className="mb-12">
-            <div className="flex flex-col sm:flex-row gap-4 items-center max-w-xl">
-               <input 
-                  type="text" 
-                  value={teamId}
-                  onChange={(e) => setTeamId(e.target.value)}
-                  placeholder="Enter FPL Team ID (e.g. 13048822)"
-                  className="w-full sm:flex-1 bg-white border border-gray-200 rounded-xl px-5 py-4 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#00E0FF] focus:border-transparent shadow-sm"
-               />
-               <button 
-                  onClick={handleFetchData}
-                  disabled={loading || !teamId}
-                  className="w-full sm:w-auto bg-[linear-gradient(92deg,#37003C_12.8%,#1e002b_139.39%)] text-white px-8 py-4 rounded-xl text-sm font-bold hover:scale-[1.02] active:scale-95 transition-all shadow-[0_10px_20px_-5px_rgba(55,0,60,0.3)] disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap flex items-center justify-center gap-2"
-               >
-                  {loading ? (
-                     <>
-                        <Loader2 className="w-4 h-4 animate-spin" />
-                        Analyzing...
-                     </>
-                  ) : (
-                     "Get Recommendations"
-                  )}
-               </button>
+         <motion.div variants={fadeInUp} className="mb-10 text-center lg:text-left flex items-center justify-between">
+            <div>
+               <p className="text-base font-semibold text-[#6B7280] tracking-[0.25em] mb-2 px-1">Transfer Suggestions</p>
+               <h1 className="text-[40px] font-semibold text-[#37003C] leading-tight tracking-tight">AI Transfer Strategy</h1>
             </div>
-         </div>
+            {loading && <div className="flex items-center gap-2 text-[#37003C] font-semibold bg-white px-4 py-2 rounded-full shadow-sm"><Loader2 className="w-4 h-4 animate-spin" /> Analyzing Squad...</div>}
+         </motion.div>
 
          {/* Only show these sections if we have transfer data */}
          {transferData ? (
@@ -253,15 +240,15 @@ const TransfersPage = () => {
                         <Star className="w-8 h-8 text-[#00E0FF] shrink-0 mt-1" />
                         <div>
                            <p className="text-[#00E0FF] text-xs font-bold tracking-widest uppercase mb-2">Projected Points ({vcData.current_gameweek})</p>
-                           <p className="text-3xl font-extrabold text-white mb-3">{vcData.projected_points.toFixed(1)} pts</p>
-                           <p className="text-white/80 text-sm leading-relaxed">{vcData.reason}</p>
+                           <p className="text-3xl font-extrabold text-white mb-3">{(vcData.projected_points || vcData.player.projected_points || 0).toFixed(1)} pts</p>
+                           <p className="text-white/80 text-sm leading-relaxed">{vcData.reason || vcData.player.reason}</p>
                         </div>
                      </div>
 
                      <div>
                         <p className="text-white/60 text-xs font-bold tracking-widest uppercase mb-4">Upcoming Fixtures</p>
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                           {vcData.player.next_fixtures.map((fixture: any, idx: number) => (
+                           {vcData.player.next_fixtures?.map((fixture: any, idx: number) => (
                               <div key={idx} className="bg-white/5 rounded-xl p-4 border border-white/10 flex flex-col items-center justify-center text-center">
                                  <p className="text-white text-sm font-bold mb-1">GW {fixture.event}</p>
                                  <p className="text-white/80 text-xs font-medium mb-3">{fixture.opponent_team.short_name} ({fixture.is_home ? 'H' : 'A'})</p>

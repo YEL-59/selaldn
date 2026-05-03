@@ -17,6 +17,13 @@ const LandingPage = () => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [analysisStep, setAnalysisStep] = useState(0);
 
+  useEffect(() => {
+    const savedId = localStorage.getItem("fpl_team_id");
+    if (savedId) {
+      setTeamId(savedId);
+    }
+  }, []);
+
   const steps = [
     { id: 1, label: "Scouting your defenders...", icon: TrendingUp },
     { id: 2, label: "Calculating Captaincy...", icon: Zap },
@@ -26,6 +33,7 @@ const LandingPage = () => {
   const handleStartCoaching = (e: React.FormEvent) => {
     e.preventDefault();
     if (!teamId) return;
+    localStorage.setItem("fpl_team_id", teamId);
     setIsAnalyzing(true);
   };
 
