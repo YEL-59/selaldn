@@ -14,7 +14,8 @@ import {
   CircleCheck,
   Bot,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import PitchView from "@/components/players/PitchView";
 
@@ -33,8 +34,97 @@ const staggerChildren = {
   },
 };
 
+const getHighResImage = (url: string) => {
+   if (!url) return "";
+   return url.replace("40x40", "250x250");
+};
+
 const DashboardPage = () => {
+  const router = useRouter();
   const [toggleOptimiser, setToggleOptimiser] = useState(true);
+  const [teamId, setTeamId] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [startingXi, setStartingXi] = useState<any>(null);
+  const [benchPlayers, setBenchPlayers] = useState<any>(null);
+  const [transferSuggestion, setTransferSuggestion] = useState<any>(null);
+  const [captaincySuggestion, setCaptaincySuggestion] = useState<any>(null);
+
+  useEffect(() => {
+    const savedId = localStorage.getItem("fpl_team_id");
+    if (savedId) {
+      setTeamId(savedId);
+      fetchData(savedId);
+    } else {
+      router.push("/");
+    }
+  }, [router]);
+
+  const fetchData = async (id: string) => {
+    setLoading(true);
+    try {
+      const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://selaldn.thesyndicates.team";
+      const [xiRes, benchRes, transferRes, captRes] = await Promise.all([
+        fetch(`${API_BASE_URL}/api/fpl/players?limit=11`),
+        fetch(`${API_BASE_URL}/api/fpl/home-page/bench-players?team_id=${id}`),
+        fetch(`${API_BASE_URL}/api/fpl/home-page/transfer-suggestions?team_id=${id}`),
+        fetch(`${API_BASE_URL}/api/fpl/home-page/captaincy-suggestion?team_id=${id}`)
+      ]);
+      const xiJson = await xiRes.json();
+      const benchJson = await benchRes.json();
+      const transferJson = await transferRes.json();
+      const captJson = await captRes.json();
+      
+      const xiData = xiJson.data?.players || xiJson.players;
+      if (xiData) setStartingXi(xiData);
+
+      const benchData = benchJson.data?.bench_players || benchJson.bench_players;
+      if (benchData) setBenchPlayers(benchData);
+      
+      const recommendations = transferJson.data?.recommendations || transferJson.recommendations;
+      if (recommendations && recommendations.length > 0) {
+        setTransferSuggestion(recommendations[0]);
+      }
+      
+      if (captJson.data) {
+        setCaptaincySuggestion(captJson.data);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const mapPlayer = (p: any) => ({
+      name: p.web_name || p.name,
+      score: p.search_score || p.points_per_game || 0,
+      team: p.team?.short_name || "N/A",
+      isCaptain: p.is_captain
+  });
+
+  const activeGoalkeeper = startingXi?.find((p:any) => p.position_code === 'GK') 
+       ? mapPlayer(startingXi.find((p:any) => p.position_code === 'GK')) 
+       : { name: "Ederson", score: 8.5, team: "MCI" };
+       
+  const activeDefenders = startingXi?.filter((p:any) => p.position_code === 'DEF').map(mapPlayer) || 
+       [{ name: "Saliba", score: 8.2, team: "ARS" }, { name: "Gabriel", score: 8.2, team: "ARS" }, { name: "Virgil", score: 8.8, team: "LIV" }];
+       
+  const activeMidfielders = startingXi?.filter((p:any) => p.position_code === 'MID').map(mapPlayer) || 
+       [{ name: "Palmer", score: 9.4, team: "CHE" }, { name: "Saka", score: 9.2, team: "ARS" }, { name: "Foden", score: 8.7, team: "MCI" }, { name: "Salah", score: 9.8, team: "LIV" }, { name: "Son", score: 8.5, team: "TOT" }];
+       
+  const activeForwards = startingXi?.filter((p:any) => p.position_code === 'FWD').map(mapPlayer) || 
+       [{ name: "Haaland", score: 9.5, team: "MCI", isCaptain: true }, { name: "Watkins", score: 8.3, team: "AVL" }];
+
+  const activeBench = benchPlayers?.map((p: any) => ({
+      name: p.web_name || p.name,
+      pos: p.position_code,
+      score: p.search_score || p.points_per_game || 0,
+  })) || [
+      { name: "Raya", pos: "GK", score: 8.5 },
+      { name: "Saliba", pos: "DEF", score: 8.2 },
+      { name: "Virgil", pos: "DEF", score: 8.8 },
+      { name: "Foden", pos: "MID", score: 8.3 },
+  ];
 
   return (
     <motion.div
@@ -59,103 +149,113 @@ const DashboardPage = () => {
             </button>
           </div>
 
-          <div className="flex items-stretch gap-0 relative mb-6">
-            {/* Player Out Box */}
-            <div className="flex-1 rounded border border-[rgba(239,68,68,0.20)] bg-[rgba(239,68,68,0.05)] p-3 flex flex-col items-center gap-3">
-              <div className="w-full flex justify-between items-center mb-1">
-                <span className="text-[11px] font-bold text-[#1e1b4b]">
-                  Player Out
-                </span>
-                <div className="w-4 h-4 rounded-full border border-red-400 flex items-center justify-center">
-                  <div className="w-2 h-0.5 bg-red-400" />
+          {transferSuggestion ? (
+            <>
+              <div className="flex items-stretch gap-0 relative mb-6">
+                {/* Player Out Box */}
+                <div className="flex-1 rounded border border-[rgba(239,68,68,0.20)] bg-[rgba(239,68,68,0.05)] p-3 flex flex-col items-center gap-3">
+                  <div className="w-full flex justify-between items-center mb-1">
+                    <span className="text-[11px] font-bold text-[#1e1b4b]">
+                      Player Out
+                    </span>
+                    <div className="w-4 h-4 rounded-full border border-red-400 flex items-center justify-center">
+                      <div className="w-2 h-0.5 bg-red-400" />
+                    </div>
+                  </div>
+                  <div className="w-16 h-16 rounded-full overflow-hidden border border-[rgba(255,77,79,0.5)] shadow-sm bg-gray-100">
+                    <img
+                      src={getHighResImage(transferSuggestion.player_out.photo_url)}
+                      alt={transferSuggestion.player_out.name}
+                      onError={(e) => { e.currentTarget.src = "https://ui-avatars.com/api/?name=" + encodeURIComponent(transferSuggestion.player_out.name) + "&background=random" }}
+                      className="w-full h-full object-cover pt-1"
+                    />
+                  </div>
+                  <div className="text-center">
+                    <p className="font-extrabold text-[#1e1b4b] text-base truncate w-24">{transferSuggestion.player_out.web_name}</p>
+                    <p className="text-[11px] font-bold text-muted-foreground/60 uppercase tracking-wider">
+                      {transferSuggestion.player_out.team.short_name}
+                    </p>
+                  </div>
+                </div>
+
+                {/* VS Badge */}
+                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-[#CCFBF1] border-2 border-white flex items-center justify-center text-[10px] font-bold text-[#134E4A] shadow-sm">
+                  VS
+                </div>
+
+                {/* Player In Box */}
+                <div className="flex-1 rounded border border-[rgba(0,255,133,0.20)] bg-[rgba(0,255,133,0.05)] p-3 flex flex-col items-center gap-3">
+                  <div className="w-full flex justify-between items-center mb-1">
+                    <span className="text-[11px] font-bold text-[#1e1b4b]">
+                      Player In
+                    </span>
+                    <div className="w-4 h-4 rounded-full border border-emerald-500 flex items-center justify-center">
+                      <div className="w-[7px] h-0.5 bg-emerald-500 absolute" />
+                      <div className="w-0.5 h-[7px] bg-emerald-500 absolute" />
+                    </div>
+                  </div>
+                  <div className="w-16 h-16 rounded-full overflow-hidden border border-[rgba(0,255,133,0.5)] shadow-sm bg-gray-100">
+                    <img
+                      src={getHighResImage(transferSuggestion.player_in.photo_url)}
+                      alt={transferSuggestion.player_in.name}
+                      onError={(e) => { e.currentTarget.src = "https://ui-avatars.com/api/?name=" + encodeURIComponent(transferSuggestion.player_in.name) + "&background=random" }}
+                      className="w-full h-full object-cover pt-1"
+                    />
+                  </div>
+                  <div className="text-center">
+                    <p className="font-extrabold text-[#1e1b4b] text-base truncate w-24">{transferSuggestion.player_in.web_name}</p>
+                    <p className="text-[11px] font-bold text-muted-foreground/60 uppercase tracking-wider">
+                      {transferSuggestion.player_in.team.short_name}
+                    </p>
+                  </div>
                 </div>
               </div>
-              <div className="w-16 h-16 rounded-full overflow-hidden border border-[rgba(255,77,79,0.5)] shadow-sm">
-                <img
-                  src="https://e0.365dm.com/21/03/1600x900/skysports-declan-rice-england_5321116.jpg?20210328074028"
-                  alt="Rice"
-                  className="w-full h-full object-cover"
-                />
+
+              <div className="text-[#37003C] text-center py-2 text-base font-bold mb-4">
+                +{transferSuggestion.points_gain.toFixed(1)} Points Gain (Next 3 GW)
               </div>
-              <div className="text-center">
-                <p className="font-extrabold text-[#1e1b4b] text-base">Rice</p>
-                <p className="text-[11px] font-bold text-muted-foreground/60 uppercase tracking-wider">
-                  ARS
+
+              <div className="rounded border border-[rgba(4,245,255,0.4)] bg-[rgba(4,245,255,0.2)] p-4 flex gap-1 text-[12px] leading-relaxed relative overflow-hidden group/box">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="44"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  className="shrink-0"
+                >
+                  <path
+                    d="M9 6V3H6"
+                    stroke="#37003C"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M4.5 6H13.5C14.3279 6 15 6.67213 15 7.5V13.5C15 14.3279 14.3279 15 13.5 15H4.5C3.67213 15 3 14.3279 3 13.5V7.5C3 6.67213 3.67213 6 4.5 6V6"
+                    stroke="#37003C"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M1.5 10.5H3M15 10.5H16.5M11.25 9.75V11.25M6.75 9.75V11.25"
+                    stroke="#37003C"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+                <p className="text-[#37003C] font-medium">
+                  {transferSuggestion.reason}
                 </p>
               </div>
+            </>
+          ) : (
+            <div className="text-center py-8 text-gray-500 font-medium text-sm">
+              No transfer suggestions available.
             </div>
-
-            {/* VS Badge */}
-            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-[#CCFBF1] border-2 border-white flex items-center justify-center text-[10px] font-bold text-[#134E4A] shadow-sm">
-              VS
-            </div>
-
-            {/* Player In Box */}
-            <div className="flex-1 rounded border border-[rgba(0,255,133,0.20)] bg-[rgba(0,255,133,0.05)] p-3 flex flex-col items-center gap-3">
-              <div className="w-full flex justify-between items-center mb-1">
-                <span className="text-[11px] font-bold text-[#1e1b4b]">
-                  Player In
-                </span>
-                <div className="w-4 h-4 rounded-full border border-emerald-500 flex items-center justify-center">
-                  <div className="w-[7px] h-0.5 bg-emerald-500 absolute" />
-                  <div className="w-0.5 h-[7px] bg-emerald-500 absolute" />
-                </div>
-              </div>
-              <div className="w-16 h-16 rounded-full overflow-hidden border border-[rgba(0,255,133,0.5)] shadow-sm">
-                <img
-                  src="https://www.caughtoffside.com/wp-content/uploads/2022/09/Foden-City-vs-Sevilla.jpg"
-                  alt="Foden"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="text-center">
-                <p className="font-extrabold text-[#1e1b4b] text-base">Foden</p>
-                <p className="text-[11px] font-bold text-muted-foreground/60 uppercase tracking-wider">
-                  MCI
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="text-[#37003C] text-center py-2 text-base font-bold mb-4">
-            +5.8 Points Gain (Next 3 GW)
-          </div>
-
-          <div className="rounded border border-[rgba(4,245,255,0.4)] bg-[rgba(4,245,255,0.2)] p-4 flex gap-1 text-[12px] leading-relaxed relative overflow-hidden group/box">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="44"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-            >
-              <path
-                d="M9 6V3H6"
-                stroke="#37003C"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M4.5 6H13.5C14.3279 6 15 6.67213 15 7.5V13.5C15 14.3279 14.3279 15 13.5 15H4.5C3.67213 15 3 14.3279 3 13.5V7.5C3 6.67213 3.67213 6 4.5 6V6"
-                stroke="#37003C"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M1.5 10.5H3M15 10.5H16.5M11.25 9.75V11.25M6.75 9.75V11.25"
-                stroke="#37003C"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-            <p className="text-[#37003C] font-medium">
-              Selling Saka for Palmer saves £0.2m and targets a 24% easier
-              fixture run.
-            </p>
-          </div>
+          )}
         </motion.div>
 
         {/* Captaincy Suggestion */}
@@ -186,27 +286,35 @@ const DashboardPage = () => {
             </h3>
           </div>
 
-          <div className="flex items-center gap-4 rounded-md bg-[#04F5FF] p-4 mb-4">
-            <div className="w-12 h-12 rounded-full overflow-hidden bg-gray-200 border border-white">
-              <img
-                src="https://assets.sorare.com/playerpicture/b375896f-1d4e-4010-9d07-76e94f3a4f2f/picture/squared-c01f04cada9a79ccca7138e1d1b8ad6b.png"
-                alt="Haaland"
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <div className="flex-1">
-              <p className="font-bold text-sm text-[#37003C]">E. Haaland</p>
-              <p className="text-xs text-[#6B7280]">Expected: 11.2 pts</p>
-            </div>
-            <div className="bg-[#F8F9FA] border border-[#EAEAEA] text-[#37003C] px-3 py-1.5 rounded-[4px] text-xs font-bold">
-              65% 10+ pts
-            </div>
-          </div>
+          {captaincySuggestion && captaincySuggestion.best_captain ? (
+            <>
+              <div className="flex items-center gap-4 rounded-md bg-[#04F5FF] p-4 mb-4">
+                <div className="w-12 h-12 rounded-full overflow-hidden bg-gray-200 border border-white">
+                  <img
+                    src={getHighResImage(captaincySuggestion.best_captain.photo_url)}
+                    alt={captaincySuggestion.best_captain.web_name}
+                    onError={(e) => { e.currentTarget.src = "https://ui-avatars.com/api/?name=" + encodeURIComponent(captaincySuggestion.best_captain.name) + "&background=random" }}
+                    className="w-full h-full object-cover pt-1"
+                  />
+                </div>
+                <div className="flex-1">
+                  <p className="font-bold text-sm text-[#37003C]">{captaincySuggestion.best_captain.web_name}</p>
+                  <p className="text-xs text-[#6B7280]">Expected: {captaincySuggestion.best_captain.points_per_game.toFixed(1)} pts</p>
+                </div>
+                <div className="bg-[#F8F9FA] border border-[#EAEAEA] text-[#37003C] px-3 py-1.5 rounded-[4px] text-xs font-bold">
+                  {captaincySuggestion.best_captain.selected_by_percent.toFixed(1)}% selected
+                </div>
+              </div>
 
-          <p className="text-sm text-[#6B7280] mb-4">
-            Haaland is the standout captain pick with a high floor and ceiling
-            against SHU.
-          </p>
+              <p className="text-sm text-[#6B7280] mb-4">
+                {captaincySuggestion.reason || `${captaincySuggestion.best_captain.web_name} is the standout captain pick with a high floor and ceiling based on AI analysis.`}
+              </p>
+            </>
+          ) : (
+            <div className="text-center py-8 text-gray-500 font-medium text-sm">
+              No captaincy suggestion available.
+            </div>
+          )}
 
           <button className="text-[#37003C] text-sm font-semibold flex items-center gap-1 group">
             Why him? AI Breakdown{" "}
@@ -320,29 +428,11 @@ const DashboardPage = () => {
 
         {/* The Pitch Rendering */}
         <PitchView
-          goalkeeper={{ name: "Ederson", score: 8.5, team: "MCI" }}
-          defenders={[
-            { name: "Saliba", score: 8.2, team: "ARS" },
-            { name: "Gabriel", score: 8.2, team: "ARS" },
-            { name: "Virgil", score: 8.8, team: "LIV" },
-          ]}
-          midfielders={[
-            { name: "Palmer", score: 9.4, team: "CHE" },
-            { name: "Saka", score: 9.2, team: "ARS" },
-            { name: "Foden", score: 8.7, team: "MCI" },
-            { name: "Salah", score: 9.8, team: "LIV" },
-            { name: "Son", score: 8.5, team: "TOT" },
-          ]}
-          forwards={[
-            { name: "Haaland", score: 9.5, team: "MCI", isCaptain: true },
-            { name: "Watkins", score: 8.3, team: "AVL" },
-          ]}
-          bench={[
-            { name: "Raya", pos: "GK", score: 8.5 },
-            { name: "Saliba", pos: "DEF", score: 8.2 },
-            { name: "Virgil", pos: "DEF", score: 8.8 },
-            { name: "Foden", pos: "MID", score: 8.3 },
-          ]}
+          goalkeeper={activeGoalkeeper}
+          defenders={activeDefenders}
+          midfielders={activeMidfielders}
+          forwards={activeForwards}
+          bench={activeBench}
         />
       </div>
 
