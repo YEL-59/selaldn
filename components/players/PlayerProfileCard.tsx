@@ -6,10 +6,10 @@ interface PlayerProfileCardProps {
   name: string;
   team: string;
   pos: string;
-  nationality: string;
-  foot: string;
-  dob: string;
-  apps: number;
+  nationality?: string | null;
+  foot?: string | null;
+  dob?: string | null;
+  apps?: number | string | null;
   image: string;
 }
 
@@ -49,10 +49,10 @@ export const PlayerProfileCard = ({
 
       {/* Details List */}
       <div className="space-y-6 px-2 pb-4">
-        <ProfileStat label="Nationality" value={nationality} flag="🇳🇴" />
-        <ProfileStat label="Preferred Foot" value={foot} />
-        <ProfileStat label="Date of Birth" value={dob} />
-        <ProfileStat label="Appearances" value={apps.toString()} />
+        {nationality && <ProfileStat label="Nationality" value={nationality} />}
+        {foot && <ProfileStat label="Preferred Foot" value={foot} />}
+        {dob && <ProfileStat label="Date of Birth" value={dob} />}
+        {apps !== undefined && apps !== null && <ProfileStat label="Appearances" value={apps.toString()} />}
       </div>
     </div>
   );

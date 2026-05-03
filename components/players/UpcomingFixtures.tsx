@@ -3,21 +3,30 @@
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
-const FIXTURES = [
-  { gw: 24, team: "Everton", venue: "H", difficulty: 2 },
-  { gw: 25, team: "Chelsea", venue: "A", difficulty: 3 },
-  { gw: 26, team: "Brentford", venue: "H", difficulty: 2 },
-];
+interface Fixture {
+  gw: number | string;
+  team: string;
+  venue: string;
+  difficulty: number;
+}
+
+interface UpcomingFixturesProps {
+  fixtures?: Fixture[];
+}
 
 const diffColors: Record<number, string> = {
-  2: "bg-emerald-400 text-white shadow-emerald-400/20",
-  3: "bg-purple-900 text-white shadow-purple-900/20",
-  4: "bg-red-500 text-white shadow-red-500/20",
+  1: "bg-emerald-300 text-white shadow-emerald-300/20",
+  2: "bg-emerald-500 text-white shadow-emerald-500/20",
+  3: "bg-cyan-500 text-white shadow-cyan-500/20",
+  4: "bg-purple-900 text-white shadow-purple-900/20",
+  5: "bg-[#2E004B] text-white shadow-[#2E004B]/20",
 };
 
-export const UpcomingFixtures = () => {
+export const UpcomingFixtures = ({ fixtures }: UpcomingFixturesProps) => {
+  if (!fixtures || fixtures.length === 0) return null;
+
   return (
-    <div className="w-full bg-white rounded-[5px] p-8 shadow-[0_4px_30px_rgba(0,0,0,0.02)] border border-gray-100/50 mt-8">
+    <div className="w-full bg-white rounded-[5px] p-8 shadow-[0_4px_30px_rgba(0,0,0,0.02)] border border-gray-100/50">
       <div className="flex items-center gap-3 mb-8">
         <div className="w-1.5 h-6 bg-cyan-400 rounded-full" />
         <h3 className="text-[18px] font-semibold text-[#2E004B] tracking-tight text-center">
@@ -26,7 +35,7 @@ export const UpcomingFixtures = () => {
       </div>
 
       <div className="space-y-4">
-        {FIXTURES.map((fixture, i) => (
+        {fixtures.map((fixture, i) => (
           <motion.div
             key={i}
             initial={{ opacity: 0, x: -10 }}

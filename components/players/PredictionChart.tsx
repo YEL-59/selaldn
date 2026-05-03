@@ -11,13 +11,19 @@ import {
   CartesianGrid,
 } from "recharts";
 
-const data = [
-  { name: "GW24", venue: "EVE (H)", pts: 7.2 },
-  { name: "GW25", venue: "CHE (A)", pts: 5.8 },
-  { name: "GW26", venue: "BRE (H)", pts: 8.5 },
-];
+interface PredictionData {
+  name: string;
+  venue: string;
+  pts: number;
+}
 
-export const PredictionChart = () => {
+interface PredictionChartProps {
+  data?: PredictionData[];
+}
+
+export const PredictionChart = ({ data = [] }: PredictionChartProps) => {
+  if (!data || data.length === 0) return null;
+
   return (
     <div className="w-full bg-[#37003C] rounded-[5px] p-8 h-[380px] shadow-2xl relative overflow-hidden">
       <div className="flex items-center gap-3 mb-8 relative z-10">
