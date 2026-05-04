@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Bot, Search, Menu, X } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 
 const navItems = [
@@ -19,6 +19,35 @@ const navItems = [
 export const Navbar = () => {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+  const [userName, setUserName] = useState("User");
+  const [avatarUrl, setAvatarUrl] = useState("https://api.dicebear.com/7.x/avataaars/svg?seed=User");
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const savedId = localStorage.getItem("fpl_team_id");
+      if (savedId) {
+        try {
+          const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://selaldn.thesyndicates.team";
+          const res = await fetch(`${API_BASE_URL}/api/fpl/home-page/gameweek-details?team_id=${savedId}`);
+          const json = await res.json();
+          if (json.data?.team) {
+            const { player_first_name, player_last_name, club_badge_src } = json.data.team;
+            const fullName = `${player_first_name} ${player_last_name}`.trim();
+            setUserName(fullName);
+            if (club_badge_src) {
+              setAvatarUrl(club_badge_src);
+            } else {
+              setAvatarUrl(`https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(fullName)}`);
+            }
+          }
+        } catch (err) {
+          console.error("Failed to fetch user for avatar", err);
+        }
+      }
+    };
+    fetchUser();
+  }, [pathname]);
 
   return (
     <nav className="sticky top-0 z-50 w-full bg-white border-b border-gray-100 py-4 h-24 flex items-center">
@@ -73,12 +102,46 @@ export const Navbar = () => {
             <Search className="w-5 h-5 text-[#2E004B]" strokeWidth={2.5} />
           </button>
 
-          <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-white shadow-xl ring-1 ring-gray-100">
-            <img
-              src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix"
-              alt="User"
-              className="w-full h-full object-cover"
-            />
+          <div className="relative">
+            <button 
+              onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
+              className="w-10 h-10 rounded-full overflow-hidden border-2 border-white shadow-xl ring-1 ring-gray-100 focus:outline-none focus:ring-2 focus:ring-[#2E004B]"
+            >
+              <img
+                src={avatarUrl}
+                alt={userName}
+                className="w-full h-full object-cover"
+              />
+            </button>
+
+            <AnimatePresence>
+              {isProfileMenuOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                  transition={{ duration: 0.15 }}
+                  className="absolute right-0 mt-3 w-48 bg-white rounded-xl shadow-lg border border-gray-100 py-2 z-50 overflow-hidden"
+                >
+                  <Link 
+                    href="/profile" 
+                    onClick={() => setIsProfileMenuOpen(false)}
+                    className="block px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-[#2E004B] transition-colors"
+                  >
+                    My Profile
+                  </Link>
+                  <button 
+                    onClick={() => {
+                      localStorage.removeItem("fpl_team_id");
+                      window.location.href = "/";
+                    }}
+                    className="w-full text-left px-4 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50 transition-colors border-t border-gray-50 mt-1"
+                  >
+                    Logout
+                  </button>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
 
           {/* Mobile Menu Toggle */}
