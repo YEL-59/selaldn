@@ -1,543 +1,191 @@
 "use client";
 
-import { motion } from "framer-motion";
-import {
-  ArrowRightLeft,
-  Calendar,
-  MessageSquare,
-  UserCircle2,
-  TrendingUp,
-  Search,
-  ChevronRight,
-  Send,
-  MoreHorizontal,
-  CircleCheck,
-  Bot,
+import { motion, AnimatePresence } from "framer-motion";
+import { 
+  CircleCheck, 
+  Zap, 
+  Bot, 
+  TrendingUp, 
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
-import PitchView from "@/components/players/PitchView";
 
-// Card Animation variants
-const fadeInUp = {
-  initial: { opacity: 0, y: 20 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.5 },
-};
+const LandingPage = () => {
+  const router = useRouter();
+  const [teamId, setTeamId] = useState("");
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [analysisStep, setAnalysisStep] = useState(0);
 
-const staggerChildren = {
-  animate: {
-    transition: {
-      staggerChildren: 0.1,
-    },
-  },
-};
+  useEffect(() => {
+    const savedId = localStorage.getItem("fpl_team_id");
+    if (savedId) {
+      setTeamId(savedId);
+    }
+  }, []);
 
-const HomePage = () => {
-  const [toggleOptimiser, setToggleOptimiser] = useState(true);
+  const steps = [
+    { id: 1, label: "Scouting your defenders...", icon: TrendingUp },
+    { id: 2, label: "Calculating Captaincy...", icon: Zap },
+    { id: 3, label: "Optimizing Transfers...", icon: Bot },
+  ];
+
+  const handleStartCoaching = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!teamId) return;
+    localStorage.setItem("fpl_team_id", teamId);
+    setIsAnalyzing(true);
+  };
+
+  useEffect(() => {
+    if (isAnalyzing) {
+      const interval = setInterval(() => {
+        setAnalysisStep((prev) => {
+          if (prev >= steps.length) {
+            clearInterval(interval);
+            setTimeout(() => {
+              router.push("/dashboard");
+            }, 800);
+            return prev;
+          }
+          return prev + 1;
+        });
+      }, 1500);
+      return () => clearInterval(interval);
+    }
+  }, [isAnalyzing, router, steps.length]);
 
   return (
-    <motion.div
-      initial="initial"
-      animate="animate"
-      variants={staggerChildren}
-      className="grid grid-cols-1 lg:grid-cols-12 gap-6"
-    >
-      {/* Left Column (Transfer, Captaincy, Optimiser) */}
-      <div className="lg:col-span-3 flex flex-col gap-6">
-        {/* Transfer Strategy - Pixel Perfect Refinement */}
+    <main className="min-h-screen flex flex-col items-center justify-center p-6 relative overflow-hidden bg-[#ededfe]">
+      {/* Background Glows */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-purple-100/50 rounded-full blur-[120px] -z-10" />
+      <div className="absolute top-1/4 right-0 w-[400px] h-[400px] bg-cyan-100/30 rounded-full blur-[100px] -z-10" />
+
+      <div className="max-w-4xl w-full flex flex-col items-center text-center">
+        {/* Badge */}
         <motion.div
-          variants={fadeInUp}
-          className="rounded-xl border border-white/10 bg-white shadow-[0_8px_32px_0_rgba(0,0,0,0.20)] backdrop-blur-md p-5"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-purple-50 px-4 py-1.5 rounded-full border border-[#37003C] flex items-center gap-2 mb-8"
         >
-          <div className="flex justify-between items-center mb-6">
-            <h3 className="font-bold text-lg text-[#1e1b4b]">
-              Transfer Strategy
-            </h3>
-            <button className="p-1 hover:bg-muted rounded-lg text-muted-foreground transition-colors">
-              <MoreHorizontal className="w-5 h-5" />
-            </button>
-          </div>
-
-          <div className="flex items-stretch gap-0 relative mb-6">
-            {/* Player Out Box */}
-            <div className="flex-1 rounded border border-[rgba(239,68,68,0.20)] bg-[rgba(239,68,68,0.05)] p-3 flex flex-col items-center gap-3">
-              <div className="w-full flex justify-between items-center mb-1">
-                <span className="text-[11px] font-bold text-[#1e1b4b]">
-                  Player Out
-                </span>
-                <div className="w-4 h-4 rounded-full border border-red-400 flex items-center justify-center">
-                  <div className="w-2 h-0.5 bg-red-400" />
-                </div>
-              </div>
-              <div className="w-16 h-16 rounded-full overflow-hidden border border-[rgba(255,77,79,0.5)] shadow-sm">
-                <img
-                  src="https://e0.365dm.com/21/03/1600x900/skysports-declan-rice-england_5321116.jpg?20210328074028"
-                  alt="Rice"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="text-center">
-                <p className="font-extrabold text-[#1e1b4b] text-base">Rice</p>
-                <p className="text-[11px] font-bold text-muted-foreground/60 uppercase tracking-wider">
-                  ARS
-                </p>
-              </div>
-            </div>
-
-            {/* VS Badge */}
-            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-[#CCFBF1] border-2 border-white flex items-center justify-center text-[10px] font-bold text-[#134E4A] shadow-sm">
-              VS
-            </div>
-
-            {/* Player In Box */}
-            <div className="flex-1 rounded border border-[rgba(0,255,133,0.20)] bg-[rgba(0,255,133,0.05)] p-3 flex flex-col items-center gap-3">
-              <div className="w-full flex justify-between items-center mb-1">
-                <span className="text-[11px] font-bold text-[#1e1b4b]">
-                  Player In
-                </span>
-                <div className="w-4 h-4 rounded-full border border-emerald-500 flex items-center justify-center">
-                  <div className="w-[7px] h-0.5 bg-emerald-500 absolute" />
-                  <div className="w-0.5 h-[7px] bg-emerald-500 absolute" />
-                </div>
-              </div>
-              <div className="w-16 h-16 rounded-full overflow-hidden border border-[rgba(0,255,133,0.5)] shadow-sm">
-                <img
-                  src="https://www.caughtoffside.com/wp-content/uploads/2022/09/Foden-City-vs-Sevilla.jpg"
-                  alt="Foden"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="text-center">
-                <p className="font-extrabold text-[#1e1b4b] text-base">Foden</p>
-                <p className="text-[11px] font-bold text-muted-foreground/60 uppercase tracking-wider">
-                  MCI
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="text-[#37003C] text-center py-2 text-base font-bold mb-4">
-            +5.8 Points Gain (Next 3 GW)
-          </div>
-
-          <div className="rounded border border-[rgba(4,245,255,0.4)] bg-[rgba(4,245,255,0.2)] p-4 flex gap-1 text-[12px] leading-relaxed relative overflow-hidden group/box">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="44"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-            >
-              <path
-                d="M9 6V3H6"
-                stroke="#37003C"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M4.5 6H13.5C14.3279 6 15 6.67213 15 7.5V13.5C15 14.3279 14.3279 15 13.5 15H4.5C3.67213 15 3 14.3279 3 13.5V7.5C3 6.67213 3.67213 6 4.5 6V6"
-                stroke="#37003C"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M1.5 10.5H3M15 10.5H16.5M11.25 9.75V11.25M6.75 9.75V11.25"
-                stroke="#37003C"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-            <p className="text-[#37003C] font-medium">
-              Selling Saka for Palmer saves £0.2m and targets a 24% easier
-              fixture run.
-            </p>
-          </div>
+          <Zap className="w-3.5 h-3.5 text-[#37003C]" fill="currentColor" />
+          <span className="text-[11px] font-bold text-[#37003C] uppercase tracking-wider">FPL Season 2025/2026 Ready</span>
         </motion.div>
 
-        {/* Captaincy Suggestion */}
-        <motion.div
-          variants={fadeInUp}
-          className="rounded-xl border border-[#EAEAEA] bg-white shadow-[0_4px_12px_0_rgba(0,0,0,0.02)] p-6 overflow-hidden relative"
+        {/* Hero Title */}
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="text-5xl md:text-7xl font-black text-[#37003C] mb-8 tracking-tight leading-[0.95]"
         >
-          <div className="flex items-center gap-2 mb-4">
-            <div className="w-8 h-8 rounded-lg bg-[linear-gradient(135deg,#00BC7D_0%,#009689_100%)] flex items-center justify-center">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 20 20"
-                fill="none"
-              >
-                <path
-                  d="M9.63498 2.72156C9.70823 2.58851 9.84809 2.50586 9.99998 2.50586C10.1519 2.50586 10.2917 2.58851 10.365 2.72156L12.825 7.39156C12.9438 7.61052 13.1543 7.76485 13.3988 7.81228C13.6434 7.8597 13.8963 7.79524 14.0883 7.63656L17.6525 4.58323C17.7929 4.46906 17.9909 4.45853 18.1426 4.55718C18.2942 4.65584 18.3649 4.84112 18.3175 5.01573L15.9558 13.5541C15.8568 13.9131 15.5315 14.1628 15.1591 14.1657H4.84164C4.46894 14.1631 4.14328 13.9134 4.04414 13.5541L1.68331 5.01656C1.63586 4.84195 1.70654 4.65667 1.85823 4.55802C2.00991 4.45936 2.20793 4.46989 2.34831 4.58406L5.91164 7.6374C6.10366 7.79608 6.3566 7.86054 6.60114 7.81311C6.84569 7.76569 7.05619 7.61135 7.17498 7.3924L9.63498 2.72156M4.16664 17.4999H15.8333"
-                  stroke="white"
-                  strokeWidth="1.66667"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </div>
-            <h3 className="font-bold text-lg text-[#1e1b4b]">
-              Captaincy Suggestion
-            </h3>
+          Your AI-Powered FPL <br /> 
+          <span className="text-[#37003C]">Coach.</span>
+        </motion.h1>
+
+        {/* Hero Subtitle */}
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="text-[#6B7280] text-lg md:text-xl max-w-xl mb-12 font-medium leading-relaxed"
+        >
+          Stop guessing. Let AI optimize your squad, predict points, and find the perfect captain using advanced data models.
+        </motion.p>
+
+        {/* Input Section */}
+        <motion.form
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          onSubmit={handleStartCoaching}
+          className="w-full max-w-xl bg-white p-2 rounded-2xl shadow-xl shadow-purple-900/5 flex items-center gap-2 border border-white"
+        >
+          <div className="flex-1 flex items-center px-4 gap-3">
+            <span className="text-gray-400 font-bold">#</span>
+            <input
+              type="text"
+              placeholder="Enter your FPL Team ID..."
+              value={teamId}
+              onChange={(e) => setTeamId(e.target.value)}
+              className="w-full outline-none text-gray-700 font-medium placeholder:text-gray-400"
+            />
           </div>
-
-          <div className="flex items-center gap-4 rounded-md bg-[#04F5FF] p-4 mb-4">
-            <div className="w-12 h-12 rounded-full overflow-hidden bg-gray-200 border border-white">
-              <img
-                src="https://assets.sorare.com/playerpicture/b375896f-1d4e-4010-9d07-76e94f3a4f2f/picture/squared-c01f04cada9a79ccca7138e1d1b8ad6b.png"
-                alt="Haaland"
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <div className="flex-1">
-              <p className="font-bold text-sm text-[#37003C]">E. Haaland</p>
-              <p className="text-xs text-[#6B7280]">Expected: 11.2 pts</p>
-            </div>
-            <div className="bg-[#F8F9FA] border border-[#EAEAEA] text-[#37003C] px-3 py-1.5 rounded-[4px] text-xs font-bold">
-              65% 10+ pts
-            </div>
-          </div>
-
-          <p className="text-sm text-[#6B7280] mb-4">
-            Haaland is the standout captain pick with a high floor and ceiling
-            against SHU.
-          </p>
-
-          <button className="text-[#37003C] text-sm font-semibold flex items-center gap-1 group">
-            Why him? AI Breakdown{" "}
-            <ChevronRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+          <button
+            type="submit"
+            disabled={!teamId || isAnalyzing}
+            className="bg-[#2B003D] text-white px-8 py-4 rounded-xl font-bold text-sm hover:bg-[#1e002b] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Start Coaching
           </button>
-        </motion.div>
+        </motion.form>
 
-        {/* Best XI Optimiser */}
-        <motion.div
-          variants={fadeInUp}
-          className="rounded-xl border border-white/10 bg-white shadow-[0_8px_32px_0_rgba(0,0,0,0.20)] backdrop-blur-[6px] p-6 flex flex-col gap-4"
-        >
-          <h3 className="font-bold text-lg text-[#1e1b4b]">
-            Best XI Optimiser
-          </h3>
-          <div className="flex items-center justify-between">
-            <span className="text-sm font-medium text-muted-foreground">
-              Current XI
-            </span>
-            <button
-              onClick={() => setToggleOptimiser(!toggleOptimiser)}
-              className={cn(
-                "w-12.5 h-6.5 rounded-full transition-all relative border border-gray-100",
-                toggleOptimiser ? "bg-[#37003C] shadow-sm" : "bg-[#E9E9FB]",
-              )}
+        {/* Analysis Card */}
+        <AnimatePresence>
+          {isAnalyzing && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 40 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="mt-12 w-full max-w-xl bg-white/80 backdrop-blur-xl border border-white p-8 rounded-[16px] shadow-2xl shadow-purple-900/10 text-left"
             >
-              <motion.div
-                animate={{ x: toggleOptimiser ? 26 : 3 }}
-                transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                className="w-5 h-5 bg-white rounded-full absolute top-0.5 shadow-md shadow-black/10"
-              />
-            </button>
-            <span className="text-sm text-[#37003C] font-bold">
-              AI Recommended XI
-            </span>
-          </div>
-
-          <div className="rounded border border-[rgba(4,245,255,0.2)] bg-[rgba(4,245,255,0.1)] p-2.5 text-[10px] font-bold text-cyan-600 w-fit cursor-help">
-            Why?
-          </div>
-        </motion.div>
-      </div>
-
-      {/* Middle Column (Pitch) */}
-      <div className="lg:col-span-6 flex flex-col gap-6">
-        {/* Gameweek Info */}
-        <motion.div
-          variants={fadeInUp}
-          className=" p-6 rounded-[12px] border border-[#EAEAEA] bg-white shadow-[0_4px_12px_0_rgba(0,0,0,0.02)] flex items-center justify-between"
-        >
-          <div className="flex flex-col gap-1">
-            <div className="flex items-center gap-3">
-              <h2 className="text-2xl font-bold text-[#37003C] tracking-tight">
-                Gameweek 12
-              </h2>
-              <span className="bg-[#04F5FF] text-[#37003C] px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase">
-                Active
-              </span>
-            </div>
-            <div className="flex items-center gap-2 text-[#6B7280]">
-              <Calendar className="w-4 h-4" />
-              <span className="text-xs font-medium">
-                Deadline: Fri 18:30 GMT
-              </span>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-8">
-            <div className="flex flex-col items-end">
-              <span className="text-[10px] font-bold text-[#6B7280] uppercase tracking-widest opacity-60">
-                AI SQUAD RATING
-              </span>
-              <div className="flex items-center gap-2 text-[#10B981] font-bold">
-                <TrendingUp className="w-4 h-4" />
-                <span className="text-sm mt-1 uppercase tracking-wide">
-                  Top 1% Global
-                </span>
-              </div>
-            </div>
-
-            <div className="relative w-16 h-16 flex items-center justify-center drop-shadow-sm">
-              <svg className="w-full h-full -rotate-90">
-                <circle
-                  cx="32"
-                  cy="32"
-                  r="28"
-                  stroke="currentColor"
-                  fill="transparent"
-                  strokeWidth="6"
-                  className="text-gray-50"
-                />
-                <circle
-                  cx="32"
-                  cy="32"
-                  r="28"
-                  stroke="currentColor"
-                  fill="transparent"
-                  strokeWidth="6"
-                  strokeDasharray={175}
-                  strokeDashoffset={175 * (1 - 0.84)}
-                  className="text-[#10B981]"
-                  strokeLinecap="round"
-                />
-              </svg>
-              <span className="absolute text-xl font-bold text-[#37003C]">
-                84
-              </span>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* The Pitch Rendering */}
-        <PitchView
-          goalkeeper={{ name: "Ederson", score: 8.5, team: "MCI" }}
-          defenders={[
-            { name: "Saliba", score: 8.2, team: "ARS" },
-            { name: "Gabriel", score: 8.2, team: "ARS" },
-            { name: "Virgil", score: 8.8, team: "LIV" },
-          ]}
-          midfielders={[
-            { name: "Palmer", score: 9.4, team: "CHE" },
-            { name: "Saka", score: 9.2, team: "ARS" },
-            { name: "Foden", score: 8.7, team: "MCI" },
-            { name: "Salah", score: 9.8, team: "LIV" },
-            { name: "Son", score: 8.5, team: "TOT" },
-          ]}
-          forwards={[
-            { name: "Haaland", score: 9.5, team: "MCI", isCaptain: true },
-            { name: "Watkins", score: 8.3, team: "AVL" },
-          ]}
-          bench={[
-            { name: "Raya", pos: "GK", score: 8.5 },
-            { name: "Saliba", pos: "DEF", score: 8.2 },
-            { name: "Virgil", pos: "DEF", score: 8.8 },
-            { name: "Foden", pos: "MID", score: 8.3 },
-          ]}
-        />
-
-
-      </div>
-
-      {/* Right Column (Chat, Player Details) */}
-      <div className="lg:col-span-3 flex flex-col gap-6">
-        {/* AI Scout Chat */}
-        <motion.div
-          variants={fadeInUp}
-          className="rounded-xl border border-white/10 bg-white shadow-[0_8px_32px_0_rgba(0,0,0,0.20)] backdrop-blur-[6px] p-6 flex flex-col h-[450px]"
-        >
-          <div className="flex justify-between items-center mb-6">
-            <h3 className="font-bold text-lg text-[#1e1b4b]">AI Scout Chat</h3>
-            <button className="p-1 hover:bg-muted rounded text-muted-foreground">
-              <MoreHorizontal className="w-5 h-5" />
-            </button>
-          </div>
-
-          {/* Suggestions */}
-          <div className="flex flex-wrap gap-2 mb-6">
-            {[
-              "Who should I captain?",
-              "Is a -4 hit worth it?",
-              "Analyze my bench",
-            ].map((q) => (
-              <button
-                key={q}
-                className="text-xs font-medium rounded-2xl border border-black/20 px-3 py-1.5 hover:bg-white hover:border-purple-200 hover:shadow-sm transition-all"
-              >
-                {q}
-              </button>
-            ))}
-          </div>
-
-          {/* Chat Area */}
-          <div className="flex-1 overflow-y-auto space-y-4 no-scrollbar mb-4">
-            <div className="flex justify-end">
-              <div className="text-[#000] text-[11px] py-3 px-4 rounded-tr-none max-w-[85%] rounded-[16px_4px_16px_16px] border border-black/10 bg-white/5">
-                Who should I captain?
-              </div>
-            </div>
-
-            <div className="flex gap-3">
-              <div className="w-8 h-8 rounded-full bg-[#37003C] flex items-center justify-center shrink-0 shadow-lg">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 16 16"
-                  fill="none"
-                >
-                  <path
-                    d="M7.99967 5.33317V2.6665H5.33301"
-                    stroke="white"
-                    strokeWidth="1.33333"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M3.99984 5.33325H11.9998C12.7357 5.33325 13.3332 5.9307 13.3332 6.66659V11.9999C13.3332 12.7358 12.7357 13.3333 11.9998 13.3333H3.99984C3.26395 13.3333 2.6665 12.7358 2.6665 11.9999V6.66659C2.6665 5.9307 3.26395 5.33325 3.99984 5.33325V5.33325"
-                    stroke="white"
-                    strokeWidth="1.33333"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M1.33301 9.33317H2.66634M13.333 9.33317H14.6663M9.99967 8.6665V9.99984M5.99967 8.6665V9.99984"
-                    stroke="white"
-                    strokeWidth="1.33333"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </div>
-              <div className="rounded-[4px_16px_16px_16px] border border-[rgba(139,92,246,0.3)] bg-[rgba(55,0,60,0.5)] text-white/90 text-[11px] font-medium py-3 px-4 rounded-tl-none leading-relaxed shadow-sm">
-                Based on expected minutes and fixture difficulty, Haaland (7.8
-                xP) is your best option, followed by Palmer (6.4 xP).
-              </div>
-            </div>
-          </div>
-
-          {/* Input */}
-          <div className="relative mt-auto">
-            <input
-              type="text"
-              placeholder="Type a message..."
-              className="w-full rounded-[20px] border border-black/5 bg-white/5 py-3.5 pl-4 pr-12 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500/10 focus:border-purple-200 transition-all"
-            />
-            <button className="absolute right-2.5 top-1/2 -translate-y-1/2 text-black rounded-xl transition-all hover:scale-105 active:scale-95">
-              <Send className="w-5 h-5" />
-            </button>
-          </div>
-        </motion.div>
-        {/* Player Search / Details - Pixel Perfect Refinement */}
-        <motion.div
-          variants={fadeInUp}
-          className="rounded-xl border border-white/10 bg-white shadow-[0_8px_32px_0_rgba(0,0,0,0.20)] backdrop-blur-[6px] p-6 flex flex-col gap-8"
-        >
-          <h3 className="font-bold text-lg text-[#1e1b4b]">
-            Player Search / Details
-          </h3>
-
-          <div className="relative">
-            <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-            <input
-              type="text"
-              placeholder="Search"
-              className="w-full rounded-[20px] border border-black/5 bg-white/5 py-3.5 pl-12 pr-4 text-sm focus:outline-none focus:ring-4 focus:ring-purple-500/5 focus:border-purple-200 transition-all"
-            />
-          </div>
-
-          <div className="flex items-center gap-5">
-            <div className="relative group">
-              <div className="w-16 h-16 rounded-full">
-                <div className="w-full h-full rounded-full overflow-hidden border border-[#04F5FF]">
-                  <img
-                    src="https://api.dicebear.com/7.x/avataaars/svg?seed=Enzo"
-                    alt="Enzo"
-                    className="w-full h-full object-cover"
-                  />
+              <div className="flex items-center gap-4 mb-8">
+                <div className="w-12 h-12 bg-gradient-to-br from-amber-100 to-amber-200 rounded-2xl flex items-center justify-center shadow-inner">
+                  <Bot className="w-6 h-6 text-amber-600" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-[#1E1B4B]">Analyzing Team ID: {teamId}</h3>
+                  <p className="text-xs text-gray-500 font-medium">Running 10,000 predictive simulations...</p>
                 </div>
               </div>
-            </div>
-            <div className="flex-1">
-              <p className="font-bold text-[#1e1b4b] text-base">
-                Enzo Fernández
-              </p>
-              <p className="text-sm text-[#555]">CHE • FWD</p>
-            </div>
-            <div className="px-4 py-2 rounded-2xl bg-[#00FF88] text-black font-bold text-sm shadow-md shadow-emerald-100">
-              7.2
-            </div>
-          </div>
 
-          <div className="grid grid-cols-3 gap-6">
-            <StatItem label="Price" value="$9.0m" />
-            <StatItem label="Total Pts" value="128" />
-            <StatItem label="Form" isForm data={[1, 3, 5, 2, 4]} />
-          </div>
+              {/* Progress Bar */}
+              <div className="w-full h-2.5 bg-gray-100 rounded-full mb-8 overflow-hidden">
+                <motion.div
+                  initial={{ width: "0%" }}
+                  animate={{ width: `${(analysisStep / steps.length) * 100}%` }}
+                  className="h-full bg-gradient-to-r from-emerald-400 to-emerald-500 rounded-full"
+                />
+              </div>
 
-          <div className="pt-8 border-t border-gray-100 grid grid-cols-3 gap-6">
-            <StatItem label="Pts (Next GW)" value="13.5" />
-            <StatItem label="Pts (Next 3 GW)" value="27.7" />
-            <StatItem label="Expected Mins" value="209" />
-          </div>
-
-          <div className="pt-2 flex items-center gap-6">
-            <span className="text-xs text-[#666] w-16">Next 3</span>
-            <div className="flex-1 flex gap-3">
-              {["MCI(H)", "MCI(H)", "FUL(A)"].map((fix, i) => (
-                <div
-                  key={i}
-                  className="flex-1 text-center bg-[#F1F5F9] px-3 py-2 rounded text-xs font-bold text-[#1e1b4b] shadow-xs border border-transparent hover:border-gray-200 transition-all cursor-default uppercase"
-                >
-                  {fix}
-                </div>
-              ))}
-            </div>
-          </div>
-        </motion.div>
+              {/* Steps */}
+              <div className="space-y-4">
+                {steps.map((step, index) => {
+                  const isActive = analysisStep > index;
+                  const isCurrent = analysisStep === index;
+                  
+                  return (
+                    <div key={step.id} className="flex items-center gap-4 transition-all">
+                      <div className={cn(
+                        "w-8 h-8 rounded-full flex items-center justify-center transition-all",
+                        isActive ? "bg-emerald-500 text-white" : 
+                        isCurrent ? "bg-[#37003C] text-white animate-pulse" : 
+                        "bg-gray-100 text-gray-300"
+                      )}>
+                        {isActive ? (
+                          <CircleCheck className="w-5 h-5" />
+                        ) : (
+                          <step.icon className="w-4 h-4" />
+                        )}
+                      </div>
+                      <span className={cn(
+                        "text-xs font-bold transition-all",
+                        isActive ? "text-gray-400" : 
+                        isCurrent ? "text-[#1E1B4B]" : 
+                        "text-gray-300"
+                      )}>
+                        {step.label}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
-    </motion.div>
+    </main>
   );
 };
 
-const StatItem = ({
-  label,
-  value,
-  isForm,
-  data,
-}: {
-  label: string;
-  value?: string;
-  isForm?: boolean;
-  data?: number[];
-}) => (
-  <div className="flex flex-col gap-1">
-    <p className="text-[10px] font-bold text-muted-foreground tracking-wider">
-      {label}
-    </p>
-    {isForm ? (
-      <div className="flex items-end gap-1 h-5 mt-1">
-        {data?.map((h, i) => (
-          <div
-            key={i}
-            className="bg-[#10B981] w-1.5 rounded-full transition-all hover:scale-y-110"
-            style={{ height: `${h * 20}%` }}
-          />
-        ))}
-      </div>
-    ) : (
-      <p className="font-bold text-sm text-[#1e1b4b]">{value}</p>
-    )}
-  </div>
-);
-
-export default HomePage;
+export default LandingPage;

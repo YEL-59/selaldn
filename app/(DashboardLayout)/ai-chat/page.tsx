@@ -11,10 +11,7 @@ export default function AiChatPage() {
   return (
     <div className="container mx-auto h-[calc(100vh-140px)] flex flex-col pt-0 px-4 mb-20">
       {/* Standalone Chat Header */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-      >
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
         <ChatHeader />
       </motion.div>
 
@@ -29,9 +26,15 @@ export default function AiChatPage() {
           <ChatMessage
             content={
               <p>
-                Hello Alex! I&apos;ve analyzed your squad <span className="font-black border-b-[3px] border-[#37003C]">&quot;Saka Potatoes&quot;</span> for Gameweek 12.
-                Your team rating is currently <span className="font-black border-b-[3px] border-[#37003C]">84/100</span>.
-                How can I help you optimize for this weekend?
+                Hello Alex! I&apos;ve analyzed your squad{" "}
+                <span className="font-semibold border-b-[3px] border-[#37003C]">
+                  &quot;Saka Potatoes&quot;
+                </span>{" "}
+                for Gameweek 12. Your team rating is currently{" "}
+                <span className="font-semibold border-b-[3px] border-[#37003C]">
+                  84/100
+                </span>
+                . How can I help you optimize for this weekend?
               </p>
             }
             isBot={true}
@@ -51,12 +54,18 @@ export default function AiChatPage() {
             content={
               <div className="space-y-6">
                 <p>
-                  Based on my analysis, you should bench <span className="text-[#00FF88] font-black">Saliba</span> and <span className="text-[#00FF88] font-black">Trippier</span>.
-                  Both have tough fixtures and their expected defensive returns are down by 12%.
+                  Based on my analysis, you should bench{" "}
+                  <span className="text-[#00FF88] font-semibold">Saliba</span>{" "}
+                  and{" "}
+                  <span className="text-[#00FF88] font-semibold">Trippier</span>
+                  . Both have tough fixtures and their expected defensive
+                  returns are down by 12%.
                 </p>
                 <p>
-                  I strongly recommend starting <span className="text-[#00FF88] font-black">Palmer</span> instead.
-                  Chelsea has a highly favorable run of fixtures starting this week.
+                  I strongly recommend starting{" "}
+                  <span className="text-[#00FF88] font-semibold">Palmer</span>{" "}
+                  instead. Chelsea has a highly favorable run of fixtures
+                  starting this week.
                 </p>
 
                 <PlayerOfferCard
