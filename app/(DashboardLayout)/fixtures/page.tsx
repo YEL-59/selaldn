@@ -108,19 +108,30 @@ const FixturesPage = () => {
             transition={{ duration: 0.4, ease: "easeOut" }}
           >
             {/* Gameweek Selector */}
-            <div className="rounded-xl bg-white shadow-[0_1px_3px_0_rgba(0,0,0,0.10),0_1px_2px_-1px_rgba(0,0,0,0.10)] p-10 mb-12 flex items-center justify-between relative">
-              <button 
-                onClick={() => navigation.previous && setSelectedGw(navigation.previous.id)}
-                disabled={!navigation.previous}
-                className="w-12 h-12 rounded-full bg-gray-50 flex items-center justify-center text-gray-400 hover:text-[#2B003D] hover:bg-gray-100 transition-all disabled:opacity-20 disabled:cursor-not-allowed"
-              >
-                <ChevronLeft className="w-6 h-6" />
-              </button>
-
-              <div className="text-center">
-                <h2 className="text-2xl font-bold text-[#37003C] mb-2">
-                  {navigation.title}
-                </h2>
+            <div className="rounded-xl bg-white shadow-[0_1px_3px_0_rgba(0,0,0,0.10),0_1px_2px_-1px_rgba(0,0,0,0.10)] p-10 mb-12 flex items-center justify-center relative">
+              <div className="text-center w-full flex flex-col items-center justify-center">
+                <div className="flex items-center justify-center gap-3 mb-2">
+                  <h2 className="text-2xl font-bold text-[#37003C]">
+                    Gameweek
+                  </h2>
+                  <input
+                    type="number"
+                    min="1"
+                    max="38"
+                    value={selectedGw || navigation.selected_gameweek || navigation.title.replace('Gameweek ', '') || ''}
+                    onChange={(e) => {
+                      if (e.target.value === '') {
+                        setSelectedGw(undefined);
+                        return;
+                      }
+                      const val = parseInt(e.target.value);
+                      if (!isNaN(val) && val >= 1 && val <= 38) {
+                        setSelectedGw(val);
+                      }
+                    }}
+                    className="w-20 text-center text-2xl font-bold text-[#37003C] border-b-2 border-gray-200 focus:border-[#37003C] focus:outline-none pb-1 bg-transparent"
+                  />
+                </div>
                 <p className="text-xs font-bold text-[#666] tracking-[0.2em] mb-6 uppercase">
                   {navigation.range}
                 </p>
@@ -133,14 +144,6 @@ const FixturesPage = () => {
                   </p>
                 </div>
               </div>
-
-              <button 
-                onClick={() => navigation.next && setSelectedGw(navigation.next.id)}
-                disabled={!navigation.next}
-                className="w-12 h-12 rounded-full bg-gray-50 flex items-center justify-center text-gray-400 hover:text-[#2B003D] hover:bg-gray-100 transition-all disabled:opacity-20 disabled:cursor-not-allowed"
-              >
-                <ChevronRight className="w-6 h-6" />
-              </button>
             </div>
 
             {/* Fixture List */}
@@ -224,23 +227,26 @@ const FixturesPage = () => {
 
             {/* FDR Table Wrapper */}
             <div className="">
-              <div className="flex justify-between items-center p-8">
-                <div className="w-32" />
-                <div className="flex items-center gap-6">
-                  <button 
-                    onClick={() => navigation.previous && setSelectedGw(navigation.previous.id)}
-                    disabled={!navigation.previous}
-                    className="text-xs font-bold text-[#666] hover:text-[#2B003D] flex items-center gap-2 transition-all hover:-translate-x-1 disabled:opacity-20"
-                  >
-                    <ChevronLeft className="w-4 h-4" /> Previous GW
-                  </button>
-                  <button 
-                    onClick={() => navigation.next && setSelectedGw(navigation.next.id)}
-                    disabled={!navigation.next}
-                    className="text-xs font-bold text-[#666] hover:text-[#2B003D] flex items-center gap-2 transition-all hover:translate-x-1 disabled:opacity-20"
-                  >
-                    Next GW <ChevronRight className="w-4 h-4" />
-                  </button>
+              <div className="flex justify-end items-center p-8">
+                <div className="flex items-center gap-3">
+                  <h2 className="text-sm font-bold text-[#37003C]">Gameweek</h2>
+                  <input
+                    type="number"
+                    min="1"
+                    max="38"
+                    value={selectedGw || navigation.selected_gameweek || navigation.title.replace('Gameweek ', '') || ''}
+                    onChange={(e) => {
+                      if (e.target.value === '') {
+                        setSelectedGw(undefined);
+                        return;
+                      }
+                      const val = parseInt(e.target.value);
+                      if (!isNaN(val) && val >= 1 && val <= 38) {
+                        setSelectedGw(val);
+                      }
+                    }}
+                    className="w-16 text-center text-sm font-bold text-[#37003C] border-b-2 border-gray-200 focus:border-[#37003C] focus:outline-none pb-1 bg-transparent"
+                  />
                 </div>
               </div>
 

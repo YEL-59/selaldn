@@ -90,7 +90,7 @@ export const useFixtures = (gameweek?: number, view: "fixtures" | "fdr" = "fixtu
       const endpoint = view === "fdr" ? "fixtures-page/fdr" : "fixtures-page";
       const url = new URL(`${API_BASE_URL}/api/fpl/${endpoint}`);
       if (gameweek) {
-        url.searchParams.append("gw", gameweek.toString());
+        url.searchParams.append("gameweek", gameweek.toString());
       }
       if (view === "fdr") {
         url.searchParams.append("limit", limit.toString());
